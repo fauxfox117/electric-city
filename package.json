@@ -19,11 +19,32 @@
   "devDependencies": {
     "@react-router/dev": "^8",
     "@tailwindcss/vite": "^4.2.2",
+    "@types/express": "^5.0.6",
     "@types/node": "^22",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "tailwindcss": "^4.2.2",
+    "tsx": "^4.23.1",
     "typescript": "^5.9.3",
     "vite": "^8.0.3"
-  }
+  },
+  "version": "1.0.0",
+  "description": "ECA_Team3 standalone app",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tripleten-externships/electriccity_team3.git"
+  },
+  "keywords": [
+    "ECA",
+    "Electric",
+    "City",
+    "Aquarium"
+  ],
+  "author": "Steven Bolin, Kenneth Madrid",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tripleten-externships/electriccity_team3/issues"
+  },
+  "homepage": "https://github.com/tripleten-externships/electriccity_team3#readme"
 }
