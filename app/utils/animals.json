@@ -1,0 +1,76 @@
+{
+  "animals": [
+    {
+      "id": "cardinal-tetra-001",
+      "commonName": "Cardinal Tetra",
+      "scientificName": "Paracheirodon axelrodi",
+      "photoUrl": "/images/cardinal-tetra.jpg",
+      "taxonomicGroup": "fish",
+      "nativeRegion": "Orinoco River, Venezuela",
+      "habitatDescription": "Slow-moving blackwater river streams with dense vegetation and acidic water.",
+      "conservationStatus": "Least Concern",
+      "conservationStatusIcon": "/icons/least-concern.svg",
+      "threats": [
+        "Overharvesting for the ornamental fish trade",
+        "River pollution"
+      ],
+      "funFact": "One of the most popular aquarium fish in the world, originally collected from Venezuelan rivers."
+    },
+    {
+      "id": "orinoco-crocodile-001",
+      "commonName": "Orinoco Crocodile",
+      "scientificName": "Crocodylus intermedius",
+      "photoUrl": "/images/orinoco-crocodile.jpg",
+      "taxonomicGroup": "reptile",
+      "nativeRegion": "Orinoco River Basin, Venezuela and Colombia",
+      "habitatDescription": "Freshwater rivers and seasonally flooded savannas of the Llanos.",
+      "conservationStatus": "Critically Endangered",
+      "conservationStatusIcon": "/icons/critically-endangered.svg",
+      "threats": [
+        "Historic hunting for skins",
+        "Habitat loss",
+        "Accidental capture in fishing nets"
+      ],
+      "funFact": "One of the largest crocodile species in the world and one of the most endangered reptiles in South America."
+    },
+    {
+      "id": "venezuelan-harlequin-frog-001",
+      "commonName": "Venezuelan Harlequin Frog",
+      "scientificName": "Atelopus cruciger",
+      "photoUrl": "/images/venezuelan-harlequin-frog.jpg",
+      "taxonomicGroup": "amphibian",
+      "nativeRegion": "Coastal Cordillera, Venezuela",
+      "habitatDescription": "Cloud forests and mountain streams with clean, fast-flowing water.",
+      "conservationStatus": "Critically Endangered",
+      "conservationStatusIcon": "/icons/critically-endangered.svg",
+      "threats": ["Chytrid fungus disease", "Climate change", "Habitat loss"],
+      "funFact": "Once thought extinct for years until small surviving populations were rediscovered in the Coastal Cordillera."
+    },
+    {
+      "id": "spectacled-bear-001",
+      "commonName": "Spectacled Bear",
+      "scientificName": "Tremarctos ornatus",
+      "photoUrl": "/images/spectacled-bear.jpg",
+      "taxonomicGroup": "mammal",
+      "nativeRegion": "Andes Mountains, Venezuela",
+      "habitatDescription": "High-altitude cloud forests and páramo grasslands.",
+      "conservationStatus": "Vulnerable",
+      "conservationStatusIcon": "/icons/vulnerable.svg",
+      "threats": ["Habitat loss", "Conflict with cattle farming", "Poaching"],
+      "funFact": "The only bear species native to South America, considered a conservation symbol in the Venezuelan Andes."
+    },
+    {
+      "id": "venezuelan-troupial-001",
+      "commonName": "Venezuelan Troupial",
+      "scientificName": "Icterus icterus",
+      "photoUrl": "/images/venezuelan-troupial.jpg",
+      "taxonomicGroup": "bird",
+      "nativeRegion": "Llanos and coastal areas, Venezuela",
+      "habitatDescription": "Open savannas, dry forests, and urban areas with scattered trees.",
+      "conservationStatus": "Least Concern",
+      "conservationStatusIcon": "/icons/least-concern.svg",
+      "threats": ["Illegal capture for the pet trade", "Habitat loss"],
+      "funFact": "The national bird of Venezuela, known for its melodic song and striking black-and-orange plumage."
+    }
+  ]
+}
