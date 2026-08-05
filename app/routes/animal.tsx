@@ -15,7 +15,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
 
   return (
     <main>
-      <Link to="/map">← Back to Map</Link>
+      <Link to="/animals">← Back to Animals</Link>
 
       <h1>{animal.commonName}</h1>
 
