@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import type { Route } from "./+types/home";
 import { HomeHero } from "../components/HomeHero/HomeHero";
-import { HomeMapPreview } from "~/components/HomeMapPreview/HomeMapPreview";
+import { HomeMapPreview } from "../components/HomeMapPreview/HomeMapPreview";
+import "./home.css";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,6 +12,15 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <><HomeHero /><HomeMapPreview /></>
-  ;
+  const [selectedAnimalId, setSelectedAnimalId] = useState<string | null>(null);
+
+  return (
+    <div className="home-screen">
+      <HomeHero isExploreEnabled={selectedAnimalId !== null} />
+      <HomeMapPreview
+        selectedAnimalId={selectedAnimalId}
+        onSelectAnimal={setSelectedAnimalId}
+      />
+    </div>
+  );
 }
