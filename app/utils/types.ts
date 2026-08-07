@@ -24,4 +24,5 @@ export interface Animal {
     conservationStatusIcon: string;
     threats: string[];
     funFact: string;
+    estimatedWildPopulation?: string;
 }
