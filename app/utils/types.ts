@@ -30,4 +30,5 @@ export interface Animal {
     relatedSpecies?: string[];
     threats: string[];
     funFact: string;
+    estimatedWildPopulation?: string;
 }
