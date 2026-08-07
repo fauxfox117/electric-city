@@ -14,7 +14,8 @@
         "Overharvesting for the ornamental fish trade",
         "River pollution"
       ],
-      "funFact": "One of the most popular aquarium fish in the world, originally collected from Venezuelan rivers."
+      "funFact": "One of the most popular aquarium fish in the world, originally collected from Venezuelan rivers.",
+      "estimatedWildPopulation": "Population stable, exact numbers not formally assessed"
     },
     {
       "id": "orinoco-crocodile-001",
@@ -31,7 +32,8 @@
         "Habitat loss",
         "Accidental capture in fishing nets"
       ],
-      "funFact": "One of the largest crocodile species in the world and one of the most endangered reptiles in South America."
+      "funFact": "One of the largest crocodile species in the world and one of the most endangered reptiles in South America.",
+      "estimatedWildPopulation": "Fewer than 250 mature individuals"
     },
     {
       "id": "venezuelan-harlequin-frog-001",
@@ -44,7 +46,8 @@
       "conservationStatus": "Critically Endangered",
       "conservationStatusIcon": "/icons/critically-endangered.svg",
       "threats": ["Chytrid fungus disease", "Climate change", "Habitat loss"],
-      "funFact": "Once thought extinct for years until small surviving populations were rediscovered in the Coastal Cordillera."
+      "funFact": "Once thought extinct for years until small surviving populations were rediscovered in the Coastal Cordillera.",
+      "estimatedWildPopulation": "Fewer than 500 mature individuals, estimated"
     },
     {
       "id": "spectacled-bear-001",
@@ -57,7 +60,8 @@
       "conservationStatus": "Vulnerable",
       "conservationStatusIcon": "/icons/vulnerable.svg",
       "threats": ["Habitat loss", "Conflict with cattle farming", "Poaching"],
-      "funFact": "The only bear species native to South America, considered a conservation symbol in the Venezuelan Andes."
+      "funFact": "The only bear species native to South America, considered a conservation symbol in the Venezuelan Andes.",
+      "estimatedWildPopulation": "Roughly 2,500 to 10,000 individuals across the Andes"
     },
     {
       "id": "venezuelan-troupial-001",
@@ -70,7 +74,8 @@
       "conservationStatus": "Least Concern",
       "conservationStatusIcon": "/icons/least-concern.svg",
       "threats": ["Illegal capture for the pet trade", "Habitat loss"],
-      "funFact": "The national bird of Venezuela, known for its melodic song and striking black-and-orange plumage."
+      "funFact": "The national bird of Venezuela, known for its melodic song and striking black-and-orange plumage.",
+      "estimatedWildPopulation": "Population stable, not formally quantified"
     }
   ]
 }
