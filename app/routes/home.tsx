@@ -1,13 +1,26 @@
+import { useState } from 'react';
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import { HomeHero } from "../components/HomeHero/HomeHero";
+import { HomeMapPreview } from "../components/HomeMapPreview/HomeMapPreview";
+import "./home.css";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Electric City Aquarium & Reptile Den" },
+    { name: "description", content: "Explore the animals of Electric City Aquarium & Reptile Den." },
   ];
 }
 
 export default function Home() {
-  return <Welcome />;
+  const [selectedAnimalId, setSelectedAnimalId] = useState<string | null>(null);
+
+  return (
+    <div className="home-screen">
+      <HomeHero isExploreEnabled={selectedAnimalId !== null} />
+      <HomeMapPreview
+        selectedAnimalId={selectedAnimalId}
+        onSelectAnimal={setSelectedAnimalId}
+      />
+    </div>
+  );
 }
