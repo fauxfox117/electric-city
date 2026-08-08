@@ -1,19 +1,18 @@
-import { Link } from "react-router";
+import { data, useLoaderData } from "react-router";
 import { getAllAnimals } from "~/utils/api";
+import { InteractiveMap } from "~/components/InteractiveMap/InteractiveMap";
+
+export async function loader() {
+  const animals = getAllAnimals();
+  return data({ animals });
+}
 
 export default function AnimalsIndex() {
-  const animals = getAllAnimals();
+  const { animals } = useLoaderData<typeof loader>();
 
   return (
     <main>
-      <h1>Animals</h1>
-      <ul>
-        {animals.map((animal) => (
-          <li key={animal.id}>
-            <Link to={`/animals/${animal.id}`}>{animal.commonName}</Link>
-          </li>
-        ))}
-      </ul>
+      <InteractiveMap animals={animals} />
     </main>
   );
 }

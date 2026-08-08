@@ -36,7 +36,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
   return (
     <main className="animal-screen">
       <header className="animal-topbar">
-        <Link to="/animals" className="animal-back-btn" aria-label="Back to animals">
+        <Link to="/map" className="animal-back-btn" aria-label="Back to map">
           ←
         </Link>
         <h1 className="animal-title">{animal.commonName.toUpperCase()}</h1>
