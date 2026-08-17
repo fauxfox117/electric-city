@@ -96,7 +96,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
               <p className="animal-header-value animal-conservation-status">{animal.conservationStatus.toUpperCase()}</p>
             </div>
           </div>
-
+{/* 
           <section className="animal-section">
             <h2 className="section-title">DESCRIPTION</h2>
             <p className="section-body">{shownDescription}</p>
@@ -109,16 +109,33 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                 {isExpanded ? "READ LESS" : "READ MORE"}
               </button>
             )}
+          </section> */}
+          <section className="animal-fact-section">
+            <div className="animal-fun-fact">
+              {animal.funFact && (
+            <section className="animal-fact-section">
+              <h2 className="section-title">FUN FACT</h2>
+              <p className="section-body">{animal.funFact}</p>
+            </section>
+          )}
+          {animal.threats.length > 0 && (
+            <section className="animal-section">
+              <h2 className="section-title">THREATS</h2>
+              <ul className="threats-list">
+                {animal.threats.map((threat) => (
+                  <li key={threat}>{threat}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+            </div>
           </section>
 
           <section className="animal-section">
             <div className="quick-stats-header">
               <h2 className="section-title">QUICK STATS</h2>
-              <button type="button" className="related-btn">
-                RELATED SPECIES
-              </button>
             </div>
-
             <div className="quick-stats-grid">
               <article className="stat-card">
                 <p className="stat-label">WEIGHT</p>
@@ -138,24 +155,6 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
               </article>
             </div>
           </section>
-
-          {/* {animal.threats.length > 0 && (
-            <section className="animal-section">
-              <h2 className="section-title">THREATS</h2>
-              <ul className="threats-list">
-                {animal.threats.map((threat) => (
-                  <li key={threat}>{threat}</li>
-                ))}
-              </ul>
-            </section>
-          )} */}
-
-          {animal.funFact && (
-            <section className="animal-section">
-              <h2 className="section-title">FUN FACT</h2>
-              <p className="section-body">{animal.funFact}</p>
-            </section>
-          )}
         </div>
       </section>
     </main>

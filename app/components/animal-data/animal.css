@@ -12,7 +12,7 @@
   margin: 0 auto;
   padding: 12px 28px 36px;
   color: var(--ink);
-  background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+  background: #0b3c5d;
   min-height: 100dvh;
 }
 
@@ -22,6 +22,18 @@
   gap: 18px;
   padding: 6px 0 14px;
   border-bottom: 1px solid #cfd5de;
+}
+
+.animal-fact-section {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.animal-fun-fact {
+  display: flex;
+  flex-direction: row;
+  /* width: 388px; */
 }
 
 .animal-back-btn {
@@ -34,8 +46,8 @@
   font-size: 28px;
   font-weight: 700;
   text-decoration: none;
-  color: #111;
-  background: #fff;
+  color: #fff;
+  background: #2a9d8f;
 }
 
 .animal-title {
@@ -43,6 +55,7 @@
   letter-spacing: 0.03em;
   margin: 0;
   font-weight: 800;
+  color: #fff;
 }
 
 .animal-layout {
@@ -107,7 +120,13 @@
 .animal-info-column {
   display: flex;
   flex-direction: column;
+  height: 825px;
+  width: 894px;
   gap: 20px;
+  background-color: #d9f3f8;
+  border-radius: 20px;
+  padding: 24px 23px 27px 28px;
+  border: 2px solid #005fcb;
 }
 
 .animal-header-row {
@@ -213,6 +232,7 @@
   border-radius: 14px;
   background: var(--card);
   padding: 14px;
+  border: 2px solid #005fcb;
 }
 
 .stat-label {
