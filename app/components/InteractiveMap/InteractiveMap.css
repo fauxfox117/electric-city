@@ -1,6 +1,6 @@
 .imap-screen {
   max-width: 1920px;
-  height: 100vh;
+  height: 1080px;
   margin: 0 auto;
   padding: 2px;
   display: flex;
@@ -41,7 +41,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  color: #000;
+  color: #fff;
 }
 
 .imap-total {
@@ -53,14 +53,13 @@
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
-  color: #000;
+  color: #fff;
 }
 
 .imap-stage {
   position: relative;
   flex: 1;
-  min-height: 0;
-  padding: 14px 20px 18px;
+  padding: 80px;
   background: #0b3c5d;
   overflow: hidden;
 }
@@ -89,10 +88,6 @@
   line-height: 1.35;
 }
 
-.imap-map {
-  margin-top: 26px;
-}
-
 .imap-map-heading {
   text-align: center;
   font-size: 48px;
@@ -104,14 +99,26 @@
 
 .imap-map-oval {
   position: relative;
-  /* width: min(1080px, 100%); */
-  /* aspect-ratio: 2 / 1; */
+  width: min(1760px, 100%);
+  aspect-ratio: 2 / 1;
   margin: 0 auto;
+  overflow: hidden; /* required to contain scaled content */
+  border-radius: 24px;
+}
+
+.imap-map-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: top left;
+  transition: transform 150ms ease;
 }
 
 .imap-map-image {
-  width: 100%;
-  height: 100%;
+  max-width: 1760px;
+  height: 801px;
   display: block;
   object-fit: contain;
   /* border: 1px solid #ff0000; */
@@ -184,13 +191,14 @@
 
 .imap-categories {
   position: relative;
-  left: 28px;
-  bottom: 59px;
+  margin-left: 60px;
+  bottom: 542px;
   border: 3px solid #111111;
   background: #ffffff;
   width: 282px;
   padding: 16px 18px 20px;
   z-index: 6;
+  border-radius: 10px;
 }
 
 .imap-panel-title {

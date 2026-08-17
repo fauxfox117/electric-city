@@ -25,6 +25,8 @@ function truncate(text: string, max = 260) {
   return `${text.slice(0, max).trim()}...`;
 }
 
+const PLACEHOLDER = "/Large%20Image%20Placeholder.png";
+
 export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
   const animal = loaderData.animal as typeof loaderData.animal & AnimalDetailOptionalFields;
   const [isExpanded, setIsExpanded] = useState(false);

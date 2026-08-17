@@ -66,9 +66,12 @@ export function InteractiveMap({ animals }: InteractiveMapProps) {
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
-  const [pan, setPan] = useState({x: 0, y:0});
+  const [pan, setPan] = useState({ x: 0, y: 0 });
   const drag = useRef({ active: false, startX: 0, startY: 0, fromX: 0, fromY: 0 });
-  
+
+  const ovalRef = useRef<HTMLDivElement | null>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
+
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
@@ -151,10 +154,47 @@ export function InteractiveMap({ animals }: InteractiveMapProps) {
 
 function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
   if (!drag.current.active) return;
-  setPan({
-    x: drag.current.fromX + (e.clientX - drag.current.startX),
-    y: drag.current.fromY + (e.clientY - drag.current.startY),
-  });
+
+  const nextX = drag.current.fromX + (e.clientX - drag.current.startX);
+  const nextY = drag.current.fromY + (e.clientY - drag.current.startY);
+
+  if (!ovalRef.current || !imageRef.current) {
+    setPan({ x: 0, y: 0 });
+    return;
+  }
+
+  const vw = ovalRef.current.clientWidth;
+  const vh = ovalRef.current.clientHeight;
+  const contentW = imageRef.current.clientWidth;
+  const contentH = imageRef.current.clientHeight;
+
+  const scaledW = contentW * zoom;
+  const scaledH = contentH * zoom;
+
+  // X axis clamp: if content narrower than viewport, center it
+  let minX: number, maxX: number;
+  if (scaledW <= vw) {
+    const centerX = (vw - scaledW) / 2;
+    minX = maxX = centerX;
+  } else {
+    minX = vw - scaledW; // negative
+    maxX = 0;
+  }
+
+  // Y axis clamp: if content shorter than viewport, center it
+  let minY: number, maxY: number;
+  if (scaledH <= vh) {
+    const centerY = (vh - scaledH) / 2;
+    minY = maxY = centerY;
+  } else {
+    minY = vh - scaledH;
+    maxY = 0;
+  }
+
+  const clampedX = Math.max(minX, Math.min(maxX, nextX));
+  const clampedY = Math.max(minY, Math.min(maxY, nextY));
+
+  setPan({ x: clampedX, y: clampedY });
 }
 
 function handlePointerUp() {
@@ -175,7 +215,6 @@ return (
 
       <div
         className={zoom > 1 ? "imap-map-pan imap-map-pan-active" : "imap-map-pan"}
-        style={{ transform: `translate(${pan.x}px, ${pan.y}px)` }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -184,52 +223,57 @@ return (
         {/* imap-map} */} 
         
         <div className="imap-map">
-          <div className="imap-map-oval" style={{ transform: "scale(" + zoom + ")", transformOrigin: "center center" }}>
-            <img className="imap-map-image" src="/world-map.svg" alt="World map" />
-            <div className="imap-map-marker-layer">
-              {visibleMarkers.map((marker, index) => {
-                const id = marker.animal.id.trim();
-                const key = id || marker.animal.commonName + "-" + index;
-                
-                const selected = selectedMarker?.animal.id === marker.animal.id;
-                return (
-                  <button
-                    key={key}
-                    type="button"
-                    className={selected ? "imap-marker imap-marker-selected" : "imap-marker"}
-                    style={{ left: marker.position.x + "%", top: marker.position.y + "%" }}
-                    onClick={() => setSelectedId(marker.animal.id)}
-                    aria-label={"Select " + marker.animal.commonName}
-                  >
-                    <span aria-hidden="true">{markerIcon(marker.category)}</span>
-                  </button>
-                );
-              })}
-            </div>
+          <div className="imap-map-oval" ref={ovalRef}>
+            <div
+              className="imap-map-inner"
+              style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`, transformOrigin: "top left" }}
+            >
+              <img ref={imageRef} className="imap-map-image" src="/world-map.svg" alt="World map" />
+              <div className="imap-map-marker-layer">
+                {visibleMarkers.map((marker, index) => {
+                  const id = marker.animal.id.trim();
+                  const key = id || marker.animal.commonName + "-" + index;
+                  
+                  const selected = selectedMarker?.animal.id === marker.animal.id;
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      className={selected ? "imap-marker imap-marker-selected" : "imap-marker"}
+                      style={{ left: marker.position.x + "%", top: marker.position.y + "%" }}
+                      onClick={() => setSelectedId(marker.animal.id)}
+                      aria-label={"Select " + marker.animal.commonName}
+                    >
+                      <span aria-hidden="true">{markerIcon(marker.category)}</span>
+                    </button>
+                  );
+                })}
+              </div>
 
-            {selectedMarker &&
-              (selectedMarker.animal.id.trim() ? (
-                <Link
-                  className="imap-selected-tag"
-                  to={"/map/" + selectedMarker.animal.id}
-                  style={{
-                    left: selectedMarker.position.x + "%",
-                    top: selectedMarker.position.y + "%",
-                  }}
-                >
-                  {selectedMarker.animal.commonName.toUpperCase()}
-                </Link>
-              ) : (
-                <span
-                  className="imap-selected-tag"
-                  style={{
-                    left: selectedMarker.position.x + "%",
-                    top: selectedMarker.position.y + "%",
-                  }}
-                >
-                  {selectedMarker.animal.commonName.toUpperCase()}
-                </span>
-              ))}
+              {selectedMarker &&
+                (selectedMarker.animal.id.trim() ? (
+                  <Link
+                    className="imap-selected-tag"
+                    to={"/map/" + selectedMarker.animal.id}
+                    style={{
+                      left: selectedMarker.position.x + "%",
+                      top: selectedMarker.position.y + "%",
+                    }}
+                  >
+                    {selectedMarker.animal.commonName.toUpperCase()}
+                  </Link>
+                ) : (
+                  <span
+                    className="imap-selected-tag"
+                    style={{
+                      left: selectedMarker.position.x + "%",
+                      top: selectedMarker.position.y + "%",
+                    }}
+                  >
+                    {selectedMarker.animal.commonName.toUpperCase()}
+                  </span>
+                ))}
+            </div>
           </div>
 
           <aside className="imap-categories">
