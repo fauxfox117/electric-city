@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
 import type { Animal } from "~/utils/types";
 import "./InteractiveMap.css";
@@ -30,10 +30,10 @@ const CATEGORY_LABELS: Record<MapCategory, string> = {
 const DEFAULT_FILTERS: MapCategory[] = ["mammals", "birds", "reptiles", "marine"];
 
 const ID_POSITIONS: Record<string, MarkerPoint> = {
-  "orinoco-crocodile-001": { x: 30, y: 58 },
-  "venezuelan-harlequin-frog-001": { x: 32, y: 55 },
-  "spectacled-bear-001": { x: 28, y: 60 },
-  "venezuelan-troupial-001": { x: 33, y: 54 },
+  "orinoco-crocodile-001": { x: 26, y: 63 },        // Orinoco basin, Colombia/Venezuela border
+  "venezuelan-harlequin-frog-001": { x: 31, y: 49 }, // Coastal Cordillera, northern Venezuela
+  "spectacled-bear-001": { x: 22, y: 68 },           // Andes, Peru/Colombia range
+  "venezuelan-troupial-001": { x: 35, y: 56 },       // Llanos, eastern Venezuela/Trinidad
 };
 
 function mapCategory(group: Animal["taxonomicGroup"]): MapCategory {
@@ -66,7 +66,9 @@ export function InteractiveMap({ animals }: InteractiveMapProps) {
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
-
+  const [pan, setPan] = useState({x: 0, y:0});
+  const drag = useRef({ active: false, startX: 0, startY: 0, fromX: 0, fromY: 0 });
+  
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
@@ -134,29 +136,61 @@ export function InteractiveMap({ animals }: InteractiveMapProps) {
   }
 
   function zoomOut() {
-    setZoom((value) => Math.max(1, Number((value - 0.1).toFixed(2))));
+    setZoom((value) => {
+      const next = Math.max(1, Number((value - 0.1).toFixed(2)));
+      if (next === 1) setPan({ x: 0, y: 0 });
+      return next;
+    });
   }
 
-  return (
-    <section className="imap-screen">
-      <header className="imap-topbar">
-        <Link to="/" className="imap-back-btn" aria-label="Back to home">
-          ←
-        </Link>
-        <h1 className="imap-title">World Wildlife Map</h1>
-        <p className="imap-total">Total species: {animals.length.toLocaleString()}</p>
-      </header>
+  function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
+    if (zoom <= 1) return;
+    drag.current = { active: true, startX: e.clientX, startY: e.clientY, fromX: pan.x, fromY: pan.y };
+    e.currentTarget.setPointerCapture(e.pointerId);
+}
 
-      <div className="imap-stage">
-    
+function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
+  if (!drag.current.active) return;
+  setPan({
+    x: drag.current.fromX + (e.clientX - drag.current.startX),
+    y: drag.current.fromY + (e.clientY - drag.current.startY),
+  });
+}
 
-        <div className="imap-map" style={{ transform: "scale(" + zoom + ")" }}>
-          <div className="imap-map-oval">
-            <img className="imap-map-image" src="/world-map.png" alt="World map" />
+function handlePointerUp() {
+  drag.current.active = false;
+}
+
+return (
+  <section className="imap-screen">
+    <header className="imap-topbar">
+      <Link to="/" className="imap-back-btn" aria-label="Back to home">
+        ←
+      </Link>
+      <h1 className="imap-title">World Wildlife Map</h1>
+      <p className="imap-total">Total species: {animals.length.toLocaleString()}</p>
+    </header>
+
+    <div className="imap-stage">   {/* ← restore this, remove the comment */}
+
+      <div
+        className={zoom > 1 ? "imap-map-pan imap-map-pan-active" : "imap-map-pan"}
+        style={{ transform: `translate(${pan.x}px, ${pan.y}px)` }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+      >
+
+        {/* imap-map} */} 
+        
+        <div className="imap-map">
+          <div className="imap-map-oval" style={{ transform: "scale(" + zoom + ")", transformOrigin: "center center" }}>
+            <img className="imap-map-image" src="/world-map.svg" alt="World map" />
             <div className="imap-map-marker-layer">
               {visibleMarkers.map((marker, index) => {
                 const id = marker.animal.id.trim();
                 const key = id || marker.animal.commonName + "-" + index;
+                
                 const selected = selectedMarker?.animal.id === marker.animal.id;
                 return (
                   <button
@@ -197,45 +231,44 @@ export function InteractiveMap({ animals }: InteractiveMapProps) {
                 </span>
               ))}
           </div>
-        </div>
 
-        <aside className="imap-categories">
-          <h2 className="imap-panel-title">Categories</h2>
-          <ul className="imap-category-list">
-            {(Object.keys(CATEGORY_LABELS) as MapCategory[]).map((category) => {
-              const active = activeFilters.has(category);
-              return (
-                <li key={category}>
-                  <button
-                    type="button"
-                    className={active ? "imap-category-btn imap-category-btn-active" : "imap-category-btn"}
-                    onClick={() => toggleFilter(category)}
-                    aria-pressed={active}
-                  >
-                    <span className="imap-category-label">
-                      <span className="imap-category-icon" aria-hidden="true">
-                        {markerIcon(category)}
+          <aside className="imap-categories">
+            <h2 className="imap-panel-title">Categories</h2>
+            <ul className="imap-category-list">
+              {(Object.keys(CATEGORY_LABELS) as MapCategory[]).map((category) => {
+                const active = activeFilters.has(category);
+                return (
+                  <li key={category}>
+                    <button
+                      type="button"
+                      className={active ? "imap-category-btn imap-category-btn-active" : "imap-category-btn"}
+                      onClick={() => toggleFilter(category)}
+                      aria-pressed={active}
+                    >
+                      <span className="imap-category-label">
+                        <span className="imap-category-icon" aria-hidden="true">
+                          {markerIcon(category)}
+                        </span>
+                        {CATEGORY_LABELS[category]}
                       </span>
-                      {CATEGORY_LABELS[category]}
-                    </span>
-                    <span className="imap-category-count">{counts[category]}</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-          <p className="imap-panel-note">Toggle icons to filter map view</p>
-        </aside>
+                      <span className="imap-category-count">{counts[category]}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="imap-panel-note">Toggle icons to filter map view</p>
+          </aside>
 
-        <div className="imap-zoom-controls">
-          <button type="button" onClick={zoomIn} aria-label="Zoom in">
-            +
-          </button>
-          <button type="button" onClick={zoomOut} aria-label="Zoom out">
-            −
-          </button>
-        </div>
+        </div>   {/* ← the imap-map closing div */}
+      </div>   {/* ← close imap-map-pan HERE, before categories */}
+
+      <div className="imap-zoom-controls">  {/* ← outside pan wrapper */}
+        <button type="button" onClick={zoomIn}>+</button>
+        <button type="button" onClick={zoomOut}>−</button>
       </div>
-    </section>
+
+    </div>   {/* ← close imap-stage */}
+  </section>
   );
 }
