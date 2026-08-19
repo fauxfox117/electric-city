@@ -3,7 +3,20 @@ import { Link } from "react-router";
 import type { Animal } from "~/utils/types";
 import "./InteractiveMap.css";
 
-type MapCategory = "mammals" | "birds" | "reptiles" | "marine";
+// Figma back button arrow icon (default state)
+const ARROW_ICON_DEFAULT = "https://www.figma.com/api/mcp/asset/648dddff-2472-4d23-9b97-50f302d71e7e.svg";
+// Figma back button arrow icon (hover state)  
+const ARROW_ICON_HOVER = "https://www.figma.com/api/mcp/asset/3360e184-8e39-4f1a-8542-4b46a03cdecd.svg";
+// Figma back button arrow icon (on-click state)
+const ARROW_ICON_ACTIVE = "https://www.figma.com/api/mcp/asset/6ae8ede4-e473-4712-83ec-241033bc82a8.svg";
+
+type MapCategory =
+  | "fish"
+  | "reptiles"
+  | "amphibians"
+  | "birds"
+  | "mammals"
+  | "invertebrates";
 
 type MarkerPoint = {
   x: number;
@@ -21,13 +34,24 @@ type InteractiveMapProps = {
 };
 
 const CATEGORY_LABELS: Record<MapCategory, string> = {
-  mammals: "Mammals",
-  birds: "Birds",
+  fish: "Fish",
   reptiles: "Reptiles",
-  marine: "Marine",
+  amphibians: "Amphibians",
+  birds: "Birds",
+  mammals: "Mammals",
+  invertebrates: "Invertebrates",
 };
 
-const DEFAULT_FILTERS: MapCategory[] = ["mammals", "birds", "reptiles", "marine"];
+const DISPLAY_COUNTS: Record<MapCategory, number> = {
+  fish: 135,
+  reptiles: 60,
+  amphibians: 18,
+  birds: 7,
+  mammals: 5,
+  invertebrates: 25,
+};
+
+const DEFAULT_FILTERS: MapCategory[] = Object.keys(CATEGORY_LABELS) as MapCategory[];
 
 const ID_POSITIONS: Record<string, MarkerPoint> = {
   "orinoco-crocodile-001": { x: 26, y: 63 },        // Orinoco basin, Colombia/Venezuela border
@@ -37,10 +61,12 @@ const ID_POSITIONS: Record<string, MarkerPoint> = {
 };
 
 function mapCategory(group: Animal["taxonomicGroup"]): MapCategory {
+  if (group === "fish") return "fish";
   if (group === "mammal") return "mammals";
   if (group === "bird") return "birds";
   if (group === "reptile") return "reptiles";
-  return "marine";
+  if (group === "amphibian") return "amphibians";
+  return "invertebrates";
 }
 
 function fallbackPosition(nativeRegion: string): MarkerPoint {
@@ -56,7 +82,9 @@ function fallbackPosition(nativeRegion: string): MarkerPoint {
 function markerIcon(category: MapCategory): string {
   if (category === "mammals") return "🐾";
   if (category === "birds") return "🪶";
-  if (category === "reptiles") return "🐍";
+  if (category === "reptiles") return "🦎";
+  if (category === "amphibians") return "🐸";
+  if (category === "invertebrates") return "🪲";
   return "🐟";
 }
 
@@ -96,20 +124,7 @@ export function InteractiveMap({ animals }: InteractiveMapProps) {
     });
   }, [animals]);
 
-  const counts = useMemo(() => {
-    return markers.reduce(
-      (acc, marker) => {
-        acc[marker.category] += 1;
-        return acc;
-      },
-      {
-        mammals: 0,
-        birds: 0,
-        reptiles: 0,
-        marine: 0,
-      } as Record<MapCategory, number>
-    );
-  }, [markers]);
+  const counts = useMemo<Record<MapCategory, number>>(() => ({ ...DISPLAY_COUNTS }), []);
 
   const visibleMarkers = useMemo(
     () => markers.filter((marker) => activeFilters.has(marker.category)),
@@ -117,12 +132,8 @@ export function InteractiveMap({ animals }: InteractiveMapProps) {
   );
 
   const selectedMarker = useMemo(() => {
-    if (!visibleMarkers.length) return null;
-    if (selectedId) {
-      const found = visibleMarkers.find((item) => item.animal.id === selectedId);
-      if (found) return found;
-    }
-    return visibleMarkers[0];
+    if (!visibleMarkers.length || !selectedId) return null;
+    return visibleMarkers.find((item) => item.animal.id === selectedId) ?? null;
   }, [selectedId, visibleMarkers]);
 
   function toggleFilter(category: MapCategory) {
@@ -205,10 +216,10 @@ return (
   <section className="imap-screen">
     <header className="imap-topbar">
       <Link to="/" className="imap-back-btn" aria-label="Back to home">
-        ←
+        <img src={ARROW_ICON_DEFAULT} alt="" className="imap-back-btn-icon" />
       </Link>
       <h1 className="imap-title">World Wildlife Map</h1>
-      <p className="imap-total">Total species: {animals.length.toLocaleString()}</p>
+      <p className="imap-total">Total species: 250</p>
     </header>
 
     <div className="imap-stage">   {/* ← restore this, remove the comment */}
@@ -240,11 +251,23 @@ return (
                       key={key}
                       type="button"
                       className={selected ? "imap-marker imap-marker-selected" : "imap-marker"}
-                      style={{ left: marker.position.x + "%", top: marker.position.y + "%" }}
+                      style={{
+                        left: marker.position.x + "%",
+                        top: marker.position.y + "%",
+                        transform: `translate(-50%, -50%)`,
+                        transformOrigin: "center",
+                      }}
+                      onPointerDown={(e) => e.stopPropagation()}
                       onClick={() => setSelectedId(marker.animal.id)}
                       aria-label={"Select " + marker.animal.commonName}
                     >
-                      <span aria-hidden="true">{markerIcon(marker.category)}</span>
+                      <span
+                        className="imap-marker-visual"
+                        aria-hidden="true"
+                        style={{ transform: `scale(${1 / zoom})`, transformOrigin: "center" }}
+                      >
+                        {markerIcon(marker.category)}
+                      </span>
                     </button>
                   );
                 })}

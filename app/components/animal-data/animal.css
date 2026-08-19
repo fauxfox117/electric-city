@@ -1,68 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Work+Sans:wght@400;500;600;700;800&display=swap");
+
 :root {
-  --ink: #101113;
-  --muted: #6d717a;
-  --line: #dfe2e8;
-  --card: #f8f9fb;
-  --panel: #fcfcfd;
+  --panel-bg: #d9f3f8;
+  --panel-border: #005fcb;
+  --deep-blue: #0b3c5d;
+  --dark: #0b1720;
+  --light-blue: #cfeff8;
+  --seafoam: #eaf7fb;
+  --white: #ffffff;
+  --line: #bcc7d1;
+  --muted: #3c4d5d;
 }
 
 .animal-screen {
   max-width: 1920px;
-  max-height: 1080px;
-  margin: 0 auto;
-  padding: 12px 28px 36px;
-  color: var(--ink);
-  background: #0b3c5d;
   min-height: 100dvh;
+  margin: 0 auto;
+  padding: 18px 28px 32px;
+  background: var(--deep-blue);
+  color: var(--dark);
+  font-family: "Work Sans", "Segoe UI", sans-serif;
 }
 
 .animal-topbar {
   display: flex;
   align-items: center;
   gap: 18px;
-  padding: 6px 0 14px;
-  border-bottom: 1px solid #cfd5de;
-}
-
-.animal-fact-section {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-}
-
-.animal-fun-fact {
-  display: flex;
-  flex-direction: row;
-  /* width: 388px; */
+  padding: 4px 0 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
 }
 
 .animal-back-btn {
-  width: 54px;
-  height: 54px;
-  border: 2px solid #111;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  font-size: 28px;
-  font-weight: 700;
+  width: 66px;
+  height: 66px;
+  border: 2px solid #000000;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  color: #fff;
   background: #2a9d8f;
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.25);
+  transition:
+    background-color 120ms ease,
+    box-shadow 120ms ease;
+  flex-shrink: 0;
+}
+
+.animal-back-btn-icon {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.animal-back-btn:hover {
+  background-color: #f7f5f2;
+}
+
+.animal-back-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
 }
 
 .animal-title {
-  font-size: 36px;
-  letter-spacing: 0.03em;
   margin: 0;
+  color: var(--white);
+  font-size: 36px;
   font-weight: 800;
-  color: #fff;
+  letter-spacing: 0.03em;
+  font-family: "Baloo 2", "Work Sans", sans-serif;
+  line-height: 1;
 }
 
 .animal-layout {
-  margin-top: 20px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 34px;
+  grid-template-columns: minmax(360px, 1fr) minmax(540px, 1.2fr);
+  gap: 30px;
+  margin-top: 22px;
 }
 
 .animal-media-column {
@@ -72,11 +87,11 @@
 }
 
 .animal-hero-media {
-  min-height: 420px;
-  border: 2px dashed var(--line);
+  min-height: 430px;
   border-radius: 18px;
-  background: var(--panel);
   overflow: hidden;
+  background: var(--white);
+  border: 2px solid rgba(190, 202, 214, 0.9);
 }
 
 .animal-photo {
@@ -86,210 +101,323 @@
   display: block;
 }
 
-.animal-photo-placeholder {
-  height: 100%;
-  min-height: 420px;
-  display: grid;
-  place-items: center;
-  color: #a7abb3;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-}
-
 .animal-media-controls {
   display: flex;
   gap: 12px;
 }
 
 .media-btn {
-  width: 118px;
-  height: 98px;
-  border: 1px solid var(--line);
+  flex: 1;
+  height: 64px;
   border-radius: 12px;
-  background: #f4f5f8;
-  color: #14161a;
+  border: 1px solid rgba(17, 17, 17, 0.16);
+  background: #f7f8fb;
+  color: #13181d;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
 }
 
 .media-btn--active {
-  border: 2px solid #111;
-  background: #efeff2;
+  border: 2px solid rgba(10, 12, 13, 0.8);
+  background: #eef0f3;
 }
 
-.animal-info-column {
+.animal-detail-panel {
+  display: flex;
+}
+
+.animal-data-card {
+  width: 100%;
+  min-height: 860px;
+  background: var(--panel-bg);
+  border: 2px solid var(--panel-border);
+  border-radius: 20px;
+  padding: 20px 20px 18px;
+  box-sizing: border-box;
+}
+
+.content {
   display: flex;
   flex-direction: column;
-  height: 825px;
-  width: 894px;
-  gap: 20px;
-  background-color: #d9f3f8;
-  border-radius: 20px;
-  padding: 24px 23px 27px 28px;
-  border: 2px solid #005fcb;
+  gap: 16px;
+  height: 100%;
 }
 
-.animal-header-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-.animal-header-block {
-  border-left: 4px solid #121212;
-  padding-left: 12px;
-}
-
-.animal-header-label {
-  margin: 0 0 3px;
-  font-size: 11px;
-  color: #8b9098;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.animal-header-value {
-  margin: 0;
-  font-size: 34px;
-  font-weight: 800;
-  line-height: 1.05;
-  text-transform: uppercase;
-}
-
-.animal-scientific-name {
-  text-transform: none;
-  font-style: italic;
-  font-size: 24px;
-  font-weight: 600;
-}
-
-.animal-conservation-status {
-  text-transform: uppercase;
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.animal-section {
-  background: transparent;
-  margin-top: 93px;
-}
-
-.section-title {
-  margin: 0 0 8px;
-  display: inline-block;
-  padding-bottom: 4px;
-  border-bottom: 4px solid #111;
-  font-size: 30px;
-  line-height: 1;
-  font-weight: 900;
-  letter-spacing: 0.01em;
-}
-
-.section-body {
-  margin: 8px 0 0;
-  color: #464b54;
-  font-size: 20px;
-  line-height: 32.5px;
-  max-width: 852px;
-  max-height: 259px;
-}
-
-.read-more-btn {
-  margin-top: 10px;
-  border: 0;
-  border-radius: 8px;
-  padding: 6px 12px;
-  background: #dfe2e8;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.quick-stats-header {
+.div-2,
+.div-3 {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  align-self: stretch;
 }
 
-.related-btn {
-  border: 0;
-  border-radius: 9px;
-  background: #dfe2e8;
-  padding: 8px 14px;
-  font-size: 16px;
-  font-weight: 800;
-  cursor: pointer;
+.div-2 {
+  border-bottom: 1px solid rgba(0, 95, 203, 0.75);
+  padding: 0 0 12px;
 }
 
-.quick-stats-grid {
-  margin-top: 10px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+.section-name {
+  display: flex;
+  width: 100%;
 }
 
-.stat-card {
-  border: 1px solid #eceef2;
-  border-radius: 14px;
-  background: var(--card);
-  padding: 14px;
-  border: 2px solid #005fcb;
-}
-
-.stat-label {
-  margin: 0;
-  font-size: 12px;
-  color: #90959e;
+.text-wrapper-4,
+.text-wrapper-5 {
+  color: var(--muted);
+  font-family: "Work Sans", sans-serif;
+  font-size: 13px;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
 
-.stat-value {
-  margin: 4px 0 0;
-  font-size: 41px;
+.section-content,
+.section-content-2 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.species-name,
+.habitat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.animal-common-name {
+  color: #0b1720;
+  font-size: 28px;
   font-weight: 800;
+  line-height: 1.1;
+  font-family: "Work Sans", sans-serif;
 }
 
-.threats-list {
-  margin: 8px 0 0;
-  padding-left: 20px;
-  color: #2c3038;
-  font-size: 27px;
+.animal-scientific {
+  color: #0b1720;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.3;
+  font-style: italic;
+}
+
+.species-conservation {
+  display: flex;
+  align-items: center;
+  min-width: 180px;
+  justify-content: flex-end;
+}
+
+.iucn-status-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.iucn-status-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+.iucn-status-text {
+  color: #0b1720;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.country-territory {
+  color: #0b1720;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.specific-region-of {
+  color: #0b1720;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.taxonomic-badge {
+  min-width: 120px;
+  min-height: 42px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 95, 203, 0.7);
+  background: rgba(255, 255, 255, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0b1720;
+}
+
+.fun-fact-card {
+  display: flex;
+  align-items: center;
+  background: var(--seafoam);
+  border: 1px solid rgba(0, 95, 203, 0.6);
+  border-radius: 16px;
+  padding: 16px 18px;
+  min-height: 94px;
+}
+
+.fun-fact-container {
+  width: 100%;
+}
+
+.add-fun-fact-here {
+  color: var(--dark);
+  font-size: 16px;
   line-height: 1.45;
 }
 
-@media (max-width: 1060px) {
+.read-more-btn {
+  width: fit-content;
+  border: none;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--dark);
+}
+
+.threats-panel {
+  gap: 10px;
+}
+
+.threats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 18px;
+}
+
+.bullet {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.threat-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #0b3c5d;
+  flex-shrink: 0;
+}
+
+.bullet-point {
+  color: #0b1720;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.quick-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 14px;
+}
+
+.stat-card,
+.stat-card-2,
+.stat-card-3,
+.stat-card-4 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 2px solid rgba(0, 95, 203, 0.8);
+  background: rgba(255, 255, 255, 0.2);
+  min-height: 96px;
+}
+
+.icon,
+.img,
+.icon-2,
+.icon-3 {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.div-wrapper-2 {
+  display: flex;
+}
+
+.text-wrapper-6 {
+  color: #3d4d5e;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.text-wrapper-7,
+.number-of-years {
+  color: #0b1720;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+@media (max-width: 1100px) {
   .animal-layout {
     grid-template-columns: 1fr;
   }
 
-  .animal-header-row {
-    grid-template-columns: 1fr;
+  .animal-data-card {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 700px) {
+  .animal-topbar {
+    gap: 12px;
   }
 
-  .quick-stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .section-title {
+  .animal-title {
     font-size: 28px;
   }
 
-  .section-body {
-    font-size: 18px;
+  .section-content,
+  .section-content-2 {
+    flex-direction: column;
   }
 
-  .animal-header-value {
-    font-size: 26px;
+  .species-conservation {
+    justify-content: flex-start;
   }
 
-  .animal-scientific-name {
-    font-size: 28px;
+  .quick-stats,
+  .threats-grid {
+    grid-template-columns: 1fr;
   }
 
-  .stat-value {
-    font-size: 24px;
-  }
-
-  .threats-list {
-    font-size: 17px;
+  .animal-media-controls {
+    flex-wrap: wrap;
   }
 }
