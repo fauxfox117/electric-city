@@ -16,12 +16,18 @@ export interface Animal {
     id: string;
     commonName: string;
     scientificName?: string;
+    description?: string;
     photoUrl: string;
     taxonomicGroup: TaxonomicGroup;
     nativeRegion: string;
     habitatDescription: string;
     conservationStatus: ConservationStatus;
     conservationStatusIcon: string;
+    weight?: string;
+    length?: string;
+    lifespan?: string;
+    diet?: string;
+    relatedSpecies?: string[];
     threats: string[];
     funFact: string;
     estimatedWildPopulation?: string;
