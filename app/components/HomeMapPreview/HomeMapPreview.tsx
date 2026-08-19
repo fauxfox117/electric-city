@@ -1,33 +1,31 @@
-import { getAllAnimals } from '../../utils/api';
-import './HomeMapPreview.css';
+  import { useNavigate } from 'react-router';
+  import './HomeMapPreview.css';
 
-interface HomeMapPreviewProps {
-  selectedAnimalId: string | null;
-  onSelectAnimal: (id: string) => void;
-}
+  const categories = [
+    { id: 'amphibians', label: 'Amphibians', icon: '/images/amphibian.png' },
+    { id: 'fish', label: 'Fish', icon: '/images/fish.png' },
+    { id: 'reptiles', label: 'Reptiles', icon: '/images/reptile.png' },
+    { id: 'mammals', label: 'Mammals', icon: '/images/mammal.png' },
+    { id: 'birds', label: 'Birds', icon: '/images/bird.png' },
+  ];
 
-export function HomeMapPreview({ selectedAnimalId, onSelectAnimal }: HomeMapPreviewProps) {
-  const previewAnimals = getAllAnimals().slice(0, 3);
+  export function HomeMapPreview() {
+  const navigate = useNavigate();
 
   return (
     <>
-      <div className="home-map-preview__globe" />
-      {previewAnimals.map((animal, index) => (
+      <img src="/images/globe.png" className="home-map-preview__globe" alt="World map" />
+      {categories.map((category, index) => (
         <button
-          key={animal.id}
+          key={category.id}
           type="button"
-          onClick={() => onSelectAnimal(animal.id)}
-          className={`home-map-preview__icon home-map-preview__icon--${index} ${
-            selectedAnimalId === animal.id ? 'home-map-preview__icon--selected' : ''
-          }`}
+          onClick={() => navigate(`/map?category=${category.id}`)}
+          className={`home-map-preview__icon home-map-preview__icon--${index}`}
         >
-          <img
-            src={animal.photoUrl}
-            alt={animal.commonName}
-            className="home-map-preview__icon-img"
-          />
+          <img src={category.icon} alt={category.label} className="home-map-preview__icon-img" />
         </button>
       ))}
+      <img src="/images/arrow-hint.png" className="home-map-preview__arrow" alt="" />
       <p className="home-map-preview__hint">tap the map to learn more</p>
     </>
   );

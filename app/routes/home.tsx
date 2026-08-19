@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <div className="home-screen">
-      <HomeHero isExploreEnabled={selectedAnimalId !== null} />
+      <HomeHero />
       <HomeMapPreview
         selectedAnimalId={selectedAnimalId}
         onSelectAnimal={setSelectedAnimalId}
