@@ -17,11 +17,6 @@
 .taxonomic-icon__img {
   width: 24px;
   height: 24px;
-  transition: filter 0.2s ease;
-}
-
-.taxonomic-icon__img--active {
-  filter: brightness(0) invert(1);
 }
 
 .taxonomic-icon__label {
