@@ -1,7 +1,27 @@
 .home-screen {
   position: relative;
-  width: 1920px;
+  width: 100%;
+  max-width: 1920px;
+  min-height: 100vh;
   height: 1080px;
+  max-height: 1080px;
+  margin: 0 auto;
   background-color: #0b3c5d;
   overflow: hidden;
+}
+
+@media (max-width: 1920px) {
+  .home-screen {
+    height: calc(100vw * 1080 / 1920);
+    min-height: 640px;
+    max-height: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .home-screen {
+    height: 100vh;
+    min-height: 100vh;
+    overflow: auto;
+  }
 }

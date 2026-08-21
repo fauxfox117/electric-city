@@ -1,0 +1,441 @@
+.imap-screen {
+  --bg: #0b3c5d;
+  --dk: #111111;
+  --panel-bg: #f2f3f5;
+  --panel-muted: #8f8c8c;
+  --white: #ffffff;
+  --teal: #2a9d8f;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--white);
+  font-family: "Inter", "Work Sans", "Segoe UI", sans-serif;
+  overflow: hidden;
+}
+
+.imap-topbar {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 18px 28px 16px;
+  background: rgba(11, 60, 93, 0.96);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.imap-back-btn {
+  width: 66px;
+  height: 66px;
+  border: 2px solid #000000;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: #2a9d8f;
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.25);
+  transition:
+    background-color 120ms ease,
+    box-shadow 120ms ease;
+  flex-shrink: 0;
+}
+
+.imap-back-btn-icon {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.imap-back-btn:hover {
+  background-color: #f7f5f2;
+}
+
+.imap-back-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.imap-title {
+  margin: 0;
+  font-size: clamp(32px, 2.4vw, 52px);
+  line-height: 1;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+}
+
+.imap-total {
+  margin: 0 0 0 auto;
+  padding: 10px 0;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.imap-stage {
+  position: relative;
+  flex: 1;
+  padding: 26px 34px 40px;
+  background: #0b3c5d;
+  overflow: hidden;
+}
+
+.imap-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 760px;
+}
+
+.imap-map-oval {
+  position: relative;
+  width: min(100%, 1480px);
+  height: min(77vh, 820px);
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.imap-map-inner {
+  position: absolute;
+  inset: 0;
+  transform-origin: top left;
+  transition: transform 160ms ease;
+  will-change: transform;
+}
+
+.imap-map-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #eaf2f7;
+}
+
+.imap-map-marker-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.imap-marker {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgba(17, 17, 17, 0.9);
+  background: var(--white);
+  color: #0b3c5d;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.imap-marker-visual {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+}
+
+.imap-marker:focus-visible,
+.imap-marker:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.6);
+  z-index: 8;
+}
+
+.imap-marker-selected {
+  background: var(--dk);
+  color: var(--white);
+}
+
+.imap-selected-tag {
+  position: absolute;
+  transform: translate(-50%, 14px);
+  min-width: 120px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 2px solid rgba(17, 17, 17, 0.9);
+  padding: 8px 12px;
+  font-size: 13px;
+  text-decoration: none;
+  color: var(--dk);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  z-index: 6;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.imap-selected-tag::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -10px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 10px solid rgba(255, 255, 255, 0.96);
+}
+
+.imap-categories {
+  position: absolute;
+  left: 34px;
+  top: 46%;
+  transform: translateY(-50%);
+  width: 248px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(17, 17, 17, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  padding: 16px 18px 12px;
+  z-index: 10;
+}
+
+.imap-panel-title {
+  margin: 0;
+  padding-bottom: 8px;
+  color: var(--dk);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.2);
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.imap-category-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.imap-category-btn {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--dk);
+  cursor: pointer;
+}
+
+.imap-category-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(17, 17, 17, 0.8);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.imap-category-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1px solid rgba(17, 17, 17, 0.7);
+  background: rgba(255, 255, 255, 0.9);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.imap-category-btn:focus-visible {
+  outline: 2px solid rgba(42, 157, 143, 0.45);
+  outline-offset: 2px;
+}
+
+.imap-category-count {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(17, 17, 17, 0.74);
+}
+
+.imap-category-btn-active .imap-category-icon {
+  background: #111111;
+  color: #ffffff;
+}
+
+.imap-category-btn:not(.imap-category-btn-active) {
+  opacity: 0.72;
+}
+
+.imap-panel-note {
+  margin: 10px 0 0;
+  color: var(--panel-muted);
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.imap-zoom-controls {
+  position: absolute;
+  right: 32px;
+  bottom: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 7;
+}
+
+.imap-zoom-controls button {
+  width: 52px;
+  height: 52px;
+  border: 2px solid rgba(17, 17, 17, 0.9);
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 8px;
+  font-size: 38px;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--dk);
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.imap-map-pan {
+  touch-action: none;
+  user-select: none;
+}
+
+.imap-map-pan-active {
+  cursor: grab;
+}
+
+.imap-map-pan-active:active {
+  cursor: grabbing;
+}
+
+.imap-marker-visual {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+@media (max-width: 1100px) {
+  .imap-notes {
+    position: static;
+    width: auto;
+    margin-bottom: 12px;
+  }
+
+  .imap-stage {
+    padding-bottom: 300px;
+  }
+
+  .imap-categories {
+    left: 20px;
+    right: 20px;
+    width: auto;
+    bottom: 18px;
+  }
+
+  .imap-map {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .imap-screen {
+    padding: 0;
+  }
+
+  .imap-title {
+    font-size: 26px;
+  }
+
+  .imap-topbar {
+    padding: 8px 10px;
+    gap: 10px;
+  }
+
+  .imap-back-btn {
+    width: 56px;
+    height: 56px;
+    border: 2px solid #111111;
+    border-radius: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 36px;
+    display: grid;
+    place-items: center;
+    line-height: 1;
+    background: #2a9d8f;
+  }
+
+  .imap-total {
+    margin-left: 0;
+  }
+
+  .imap-stage {
+    padding: 10px 10px 260px;
+  }
+
+  .imap-map-heading {
+    font-size: 32px;
+  }
+
+  .imap-notes {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .imap-marker {
+    width: 58px;
+    height: 58px;
+    font-size: 22px;
+  }
+
+  .imap-selected-tag {
+    transform: translate(-44%, 40px);
+    font-size: 18px;
+  }
+
+  .imap-zoom-controls {
+    right: 12px;
+    bottom: 200px;
+  }
+
+  .imap-zoom-controls button {
+    width: 50px;
+    height: 50px;
+    font-size: 40px;
+  }
+
+  .imap-panel-title {
+    font-size: 28px;
+  }
+
+  .imap-category-btn {
+    font-size: 22px;
+    padding: 8px 0;
+  }
+
+  .imap-category-count {
+    font-size: 18px;
+  }
+}
