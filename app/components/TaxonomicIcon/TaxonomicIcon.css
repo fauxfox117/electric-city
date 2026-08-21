@@ -5,7 +5,7 @@
   height: 52px;
   padding: 10px 20px;
   border-radius: 999px;
-  border: 2px solid #d1d5db;
+  border: 2px solid #005fcb;
   background-color: #ffffff;
   cursor: pointer;
   transition:
@@ -21,8 +21,12 @@
 
 .taxonomic-icon__label {
   font-family: "Baloo 2", sans-serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 26px;
+  letter-spacing: -1%;
+  text-align: center;
   text-transform: uppercase;
-  font-size: 16px;
   color: #374151;
   white-space: nowrap;
 }

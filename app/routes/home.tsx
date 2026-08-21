@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { Route } from "./+types/home";
 import { HomeHero } from "../components/HomeHero/HomeHero";
 import { HomeMapPreview } from "../components/HomeMapPreview/HomeMapPreview";
@@ -12,15 +11,10 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  const [selectedAnimalId, setSelectedAnimalId] = useState<string | null>(null);
-
   return (
     <div className="home-screen">
       <HomeHero />
-      <HomeMapPreview
-        selectedAnimalId={selectedAnimalId}
-        onSelectAnimal={setSelectedAnimalId}
-      />
+      <HomeMapPreview />
     </div>
   );
 }

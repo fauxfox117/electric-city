@@ -28,7 +28,7 @@
 />
       ))}
       <img src="/images/arrow-hint.png" className="home-map-preview__arrow" alt="" />
-      <p className="home-map-preview__hint">tap the map to learn more</p>
+      <p className="home-map-preview__hint">tap to learn more</p>
     </>
   );
 }

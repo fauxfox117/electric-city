@@ -1,23 +1,7 @@
-.home-hero__top-row {
-  position: absolute;
-  top: 125px;
-  left: 152px;
-  display: flex;
-  align-items: center;
-  gap: 37px;
-}
-
-/*.home-hero__logo {
-  width: 169px;
-  height: 164px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  object-fit: contain;
-}*/
-
 .home-hero__logo-wrapper {
+  position: absolute;
+  top: 104px;
+  left: 124px;
   width: 260px;
   height: 260px;
   border-radius: 50%;
@@ -35,6 +19,9 @@
 }
 
 .home-hero__title {
+  position: absolute;
+  top: 125px;
+  left: 440px;
   width: 322px;
   height: 240px;
   margin: 0;
