@@ -1,18 +1,14 @@
 .home-map-preview__globe {
   position: absolute;
-  top: 125px;
-  left: 824px;
-  width: 830px;
-  height: 830px;
-  border-radius: 50%;
-  background-color: #ffffff;
-  box-shadow: 0 4px 36.9px 9px rgba(0, 0, 0, 0.25);
+  top: 41px;
+  left: 848px;
+  width: 965px;
+  height: 958px;
+  object-fit: contain;
 }
 
 .home-map-preview__icon {
   position: absolute;
-  width: 269px;
-  height: 180px;
   border: none;
   background: none;
   padding: 0;
@@ -20,18 +16,50 @@
 }
 
 .home-map-preview__icon--0 {
-  top: 260px;
-  left: 831px;
+  /* amphibians */
+  top: 215px;
+  left: 1151px;
+  width: 194px;
+  height: 52px;
 }
 
 .home-map-preview__icon--1 {
-  top: 483px;
-  left: 1154px;
+  /* fish */
+  top: 378px;
+  left: 905px;
+  width: 116px;
+  height: 52px;
 }
 
 .home-map-preview__icon--2 {
-  top: 190px;
-  left: 1498px;
+  /* reptiles */
+  top: 443px;
+  left: 1231px;
+  width: 159px;
+  height: 58px;
+}
+
+.home-map-preview__icon--3 {
+  /* mammals */
+  top: 590px;
+  left: 1618px;
+  width: 173px;
+  height: 52px;
+}
+
+.home-map-preview__icon--4 {
+  /* birds */
+  top: 720px;
+  left: 1321px;
+  width: 131px;
+  height: 52px;
+}
+
+.home-map-preview__icon--5 {
+  /*invertebrates*/
+  position: absolute;
+  top: 584px;
+  right: 700px;
 }
 
 .home-map-preview__icon-img {
@@ -41,21 +69,30 @@
   transition: filter 0.2s ease;
 }
 
-.home-map-preview__icon:hover .home-map-preview__icon-img,
-.home-map-preview__icon--selected .home-map-preview__icon-img {
-  filter: brightness(0.7);
+.home-map-preview__icon:hover .home-map-preview__icon-img {
+  filter: brightness(0.85);
 }
 
 .home-map-preview__hint {
   position: absolute;
-  top: 600px;
-  left: 342px;
-  width: 181px;
-  height: 58px;
+  top: 704px;
+  left: 350px;
+  height: 29px;
   margin: 0;
   font-family: "Inter", sans-serif;
   font-weight: 600;
   font-size: 24px;
-  color: #000000;
-  text-align: left;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.home-map-preview__arrow {
+  position: absolute;
+  top: 578px;
+  left: 601px;
+  width: 216px;
+  height: 190.5px;
+  object-fit: contain;
 }

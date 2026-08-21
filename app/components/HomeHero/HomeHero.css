@@ -1,77 +1,80 @@
-.home-hero__top-row {
+.home-hero__logo-wrapper {
   position: absolute;
-  top: 125px;
-  left: 152px;
-  display: flex;
-  align-items: center;
-  gap: 37px;
-}
-
-.home-hero__logo {
-  width: 169px;
-  height: 164px;
-  background-color: #d9d9d9;
+  top: 104px;
+  left: 124px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background-color: #d9f3f8;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  color: #666;
+  overflow: hidden;
+}
+
+.home-hero__logo {
+  width: 191px;
+  height: 152px;
+  object-fit: contain;
 }
 
 .home-hero__title {
-  width: 222px;
-  height: 164px;
+  position: absolute;
+  top: 125px;
+  left: 440px;
+  width: 322px;
+  height: 240px;
   margin: 0;
-  font-family: "Inter", sans-serif;
-  font-size: 48px;
-  font-weight: 600;
-  line-height: 57px;
-  color: #000000;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 76px;
+  font-weight: 700;
+  line-height: 80px;
+  color: #d9f3f8;
   text-transform: uppercase;
+  letter-spacing: -2%;
 }
 
 .home-hero__welcome {
   position: absolute;
-  top: 327px;
-  left: 152px;
-  width: 517px;
-  height: 97px;
+  top: 391px;
+  left: 124px;
+  width: 638px;
+  height: 128px;
   margin: 0;
-  font-family: "Inter", sans-serif;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 600;
   font-size: 24px;
-  font-weight: 400;
-  line-height: 100%;
-  color: #000000;
+  line-height: 32px;
+  letter-spacing: 0%;
+  color: #d9f3f8;
 }
 
 .home-hero__cta-btn {
   position: absolute;
-  top: 760px;
-  left: 152px;
+  top: 795px;
+  left: 186px;
   width: 466px;
   height: 67px;
   padding: 15px 20px;
-  background-color: #d9d9d9;
-  color: #000000;
+  background-color: #2a9d8f;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
-  font-family: "Inter", sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  text-transform: uppercase;
-  border: 1px solid #999999;
+  gap: 20px;
+  border: none;
   border-radius: 999px;
   box-sizing: border-box;
-}
-
-.home-hero__cta-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.home-hero__cta-btn:not(:disabled) {
   cursor: pointer;
+  box-shadow: 0 7px 14px 0 rgba(0, 0, 0, 0.25);
+  transition: background-color 0.2s ease;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 44px;
+  text-transform: uppercase;
+}
+
+.home-hero__cta-btn:hover {
+  background-color: #1b7a6e;
 }

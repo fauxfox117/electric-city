@@ -1,0 +1,41 @@
+.taxonomic-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 52px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 2px solid #005fcb;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.taxonomic-icon__img {
+  width: 24px;
+  height: 24px;
+}
+
+.taxonomic-icon__label {
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 26px;
+  letter-spacing: -1%;
+  text-align: center;
+  text-transform: uppercase;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.taxonomic-icon--active {
+  background-color: #1565c0;
+  border: none;
+}
+
+.taxonomic-icon--active .taxonomic-icon__label {
+  color: #ffffff;
+}

@@ -10,7 +10,8 @@ export type TaxonomicGroup =
 | 'reptile'
 | 'amphibian'
 | 'mammal'
-| 'bird';
+| 'bird'
+| 'invertebrate';
 
 export interface Animal {
     id: string;
