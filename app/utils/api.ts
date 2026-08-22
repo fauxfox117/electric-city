@@ -1,8 +1,6 @@
 import type { Animal, TaxonomicGroup } from './types';
 import animalsData from './animals.json';
 
-// NOTE: photoUrl and conservationStatusIcon values in animals.json are placeholders
-// pending real assets from the UX/UI team
 
 
 const animals = animalsData.animals as Animal[];

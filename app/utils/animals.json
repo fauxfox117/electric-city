@@ -1,10 +1,10 @@
 {
   "animals": [
     {
-      "id": " ",
+      "id": "Cardinal-Tetra-001",
       "commonName": "Cardinal Tetra",
       "scientificName": "Paracheirodon axelrodi",
-      "photoUrl": "/LargeImagePlaceholder.png",
+      "photoUrl": "",
 
       "taxonomicGroup": "fish",
       "nativeRegion": "Orinoco River, Venezuela",
@@ -22,7 +22,7 @@
       "id": "orinoco-crocodile-001",
       "commonName": "Orinoco Crocodile",
       "scientificName": "Crocodylus intermedius",
-      "photoUrl": "/LargeImagePlaceholder.png",
+      "photoUrl": "",
 
       "taxonomicGroup": "reptile",
       "nativeRegion": "Orinoco River Basin, Venezuela and Colombia",
@@ -41,7 +41,7 @@
       "id": "venezuelan-harlequin-frog-001",
       "commonName": "Venezuelan Harlequin Frog",
       "scientificName": "Atelopus cruciger",
-      "photoUrl": "/LargeImagePlaceholder.png",
+      "photoUrl": "",
 
       "taxonomicGroup": "amphibian",
       "nativeRegion": "Coastal Cordillera, Venezuela",
@@ -56,7 +56,7 @@
       "id": "spectacled-bear-001",
       "commonName": "Spectacled Bear",
       "scientificName": "Tremarctos ornatus",
-      "photoUrl": "/LargeImagePlaceholder.png",
+      "photoUrl": "",
       "taxonomicGroup": "mammal",
       "nativeRegion": "Andes Mountains, Venezuela",
       "habitatDescription": "High-altitude cloud forests and páramo grasslands.",
@@ -70,7 +70,7 @@
       "id": "venezuelan-troupial-001",
       "commonName": "Venezuelan Troupial",
       "scientificName": "Icterus icterus",
-      "photoUrl": "/LargeImagePlaceholder.png",
+      "photoUrl": "",
       "taxonomicGroup": "bird",
       "nativeRegion": "Llanos and coastal areas, Venezuela",
       "habitatDescription": "Open savannas, dry forests, and urban areas with scattered trees.",

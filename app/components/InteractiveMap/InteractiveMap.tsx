@@ -3,12 +3,17 @@ import { Link } from "react-router";
 import type { Animal } from "~/utils/types";
 import "./InteractiveMap.css";
 
-// Figma back button arrow icon (default state)
 const ARROW_ICON_DEFAULT = "https://www.figma.com/api/mcp/asset/648dddff-2472-4d23-9b97-50f302d71e7e.svg";
-// Figma back button arrow icon (hover state)  
-const ARROW_ICON_HOVER = "https://www.figma.com/api/mcp/asset/3360e184-8e39-4f1a-8542-4b46a03cdecd.svg";
-// Figma back button arrow icon (on-click state)
-const ARROW_ICON_ACTIVE = "https://www.figma.com/api/mcp/asset/6ae8ede4-e473-4712-83ec-241033bc82a8.svg";
+const CATEGORY_ICONS: Record<MapCategory, string> = {
+  fish: "/images/fish.png",
+  reptiles: "/images/reptile.png",
+  amphibians: "/images/amphibian.png",
+  birds: "/images/bird.png",
+  mammals: "/images/mammal.png",
+  invertebrates: "/images/invertebrate.png",
+};
+const PLUS_ICON = "/plus-icon.svg";
+const MINUS_ICON = "/minus-icon.svg";
 
 type MapCategory =
   | "fish"
@@ -80,12 +85,7 @@ function fallbackPosition(nativeRegion: string): MarkerPoint {
 }
 
 function markerIcon(category: MapCategory): string {
-  if (category === "mammals") return "🐾";
-  if (category === "birds") return "🪶";
-  if (category === "reptiles") return "🦎";
-  if (category === "amphibians") return "🐸";
-  if (category === "invertebrates") return "🪲";
-  return "🐟";
+  return CATEGORY_ICONS[category];
 }
 
 export function InteractiveMap({ animals }: InteractiveMapProps) {
@@ -239,7 +239,7 @@ return (
               className="imap-map-inner"
               style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`, transformOrigin: "top left" }}
             >
-              <img ref={imageRef} className="imap-map-image" src="/world-map.svg" alt="World map" />
+              <img ref={imageRef} className="imap-map-image" src="/world-map.png" alt="World map" />
               <div className="imap-map-marker-layer">
                 {visibleMarkers.map((marker, index) => {
                   const id = marker.animal.id.trim();
@@ -266,7 +266,7 @@ return (
                         aria-hidden="true"
                         style={{ transform: `scale(${1 / zoom})`, transformOrigin: "center" }}
                       >
-                        {markerIcon(marker.category)}
+                        <img src={markerIcon(marker.category)} alt="" />
                       </span>
                     </button>
                   );
@@ -314,7 +314,7 @@ return (
                     >
                       <span className="imap-category-label">
                         <span className="imap-category-icon" aria-hidden="true">
-                          {markerIcon(category)}
+                          <img src={markerIcon(category)} alt="" />
                         </span>
                         {CATEGORY_LABELS[category]}
                       </span>
@@ -330,9 +330,13 @@ return (
         </div>   {/* ← the imap-map closing div */}
       </div>   {/* ← close imap-map-pan HERE, before categories */}
 
-      <div className="imap-zoom-controls">  {/* ← outside pan wrapper */}
-        <button type="button" onClick={zoomIn}>+</button>
-        <button type="button" onClick={zoomOut}>−</button>
+      <div className="imap-zoom-controls">
+        <button type="button" onClick={zoomIn} aria-label="Zoom in">
+          <img src={PLUS_ICON} alt="" />
+        </button>
+        <button type="button" onClick={zoomOut} aria-label="Zoom out">
+          <img src={MINUS_ICON} alt="" />
+        </button>
       </div>
 
     </div>   {/* ← close imap-stage */}

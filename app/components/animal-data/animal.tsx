@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { data, Link } from "react-router";
 import { getAnimalById } from "~/utils/api";
 import type { Route } from "./+types/animal";
 import "./animal.css";
 
-// Figma back button arrow icon (default state)
-const ARROW_ICON_DEFAULT = "https://www.figma.com/api/mcp/asset/648dddff-2472-4d23-9b97-50f302d71e7e.svg";
-// Figma back button arrow icon (hover state)
-const ARROW_ICON_HOVER = "https://www.figma.com/api/mcp/asset/3360e184-8e39-4f1a-8542-4b46a03cdecd.svg";
-// Figma back button arrow icon (on-click state)
-const ARROW_ICON_ACTIVE = "https://www.figma.com/api/mcp/asset/6ae8ede4-e473-4712-83ec-241033bc82a8.svg";
+const ARROW_ICON = "/round-arrow-back.png";
+const CLOSE_ICON = "/close-btn.png";
+const TAXONOMIC_ICONS: Record<string, string> = {
+  fish: "/images/fish-active.png",
+  reptile: "/images/reptile-active.png",
+  amphibian: "/images/amphibian-active.png",
+  mammal: "/images/mammal-active.png",
+  bird: "/images/bird-active.png",
+  invertebrate: "/images/invertebrate-active.png",
+};
 
 type AnimalDetailOptionalFields = {
   description?: string;
@@ -58,11 +62,10 @@ const CONSERVATION_STATUS_ICONS: Record<string, string> = {
 
 export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
   const animal = loaderData.animal as typeof loaderData.animal & AnimalDetailOptionalFields;
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [activeMedia, setActiveMedia] = useState<"video" | "photo" | "audio">("video");
 
   const description = animal.description ?? animal.habitatDescription ?? "";
-  const shownDescription = isExpanded ? description : truncate(description);
   const photoSource = normalizePhotoUrl(animal.photoUrl);
   const statusKey = animal.conservationStatus?.toLowerCase() ?? "least concern";
   const resolvedStatusIcon = CONSERVATION_STATUS_ICONS[statusKey] ?? animal.conservationStatusIcon ?? "/Least-Concern.svg";
@@ -70,20 +73,72 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
   const statusText = animal.conservationStatus.toUpperCase();
   const taxonomicLabel = animal.taxonomicGroup.toUpperCase();
   const keyThreats = (animal.threats ?? []).slice(0, 4);
+  const photoAvailable = Boolean(animal.photoUrl?.trim());
+
+  useEffect(() => {
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, []);
+
+  function expandableText(section: string, text: string, className: string) {
+    const expanded = expandedSections.has(section);
+    const canExpand = text.length > 180;
+
+    return (
+      <>
+        <div className={`${className}${expanded ? " is-expanded" : ""}`}>{text}</div>
+        {canExpand && (
+          <button
+            type="button"
+            className="read-more-btn"
+            onClick={() => setExpandedSections((previous) => {
+              const next = new Set(previous);
+              if (next.has(section)) next.delete(section);
+              else next.add(section);
+              return next;
+            })}
+          >
+            {expanded ? "READ LESS" : "READ MORE"}
+          </button>
+        )}
+      </>
+    );
+  }
 
   return (
     <main className="animal-screen">
       <header className="animal-topbar">
         <Link to="/map" className="animal-back-btn" aria-label="Back to map">
-          <img src={ARROW_ICON_DEFAULT} alt="" className="animal-back-btn-icon" />
+          <img src={ARROW_ICON} alt="" className="animal-back-btn-icon" />
         </Link>
         <h1 className="animal-title">{animal.commonName.toUpperCase()}</h1>
+        <Link to="/map" className="animal-close-btn" aria-label="Close animal details">
+          <img src={CLOSE_ICON} alt="" />
+        </Link>
       </header>
 
       <section className="animal-layout">
         <aside className="animal-media-column">
           <div className="animal-hero-media">
-            <img className="animal-photo" src={photoSource} alt={animal.commonName} />
+            {photoAvailable ? (
+              <img className="animal-photo" src={photoSource} alt={animal.commonName} />
+            ) : (
+              <div className="animal-empty-state">
+                <img src="/Missing-Data.svg" alt="" />
+                <div>
+                  <strong>No Photo Available</strong>
+                  <p>We’re currently updating this animal’s image.</p>
+                  <p>Please explore another species.</p>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="animal-media-controls" role="tablist" aria-label="Media type">
@@ -127,8 +182,15 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                   </div>
                   <div className="species-conservation">
                     <div className="iucn-status-row">
-                      <img className="iucn-status-icon" src={statusIconSource} alt={statusText} />
-                      <span className="iucn-status-text">{statusText}</span>
+                      {[
+                        ["EX", "extinct"], ["EW", "extinct in the wild"], ["CR", "critically endangered"],
+                        ["EN", "endangered"], ["VU", "vulnerable"], ["NT", "near threatened"], ["LC", "least concern"],
+                      ].map(([code, key]) => (
+                        <span key={code} className={`status-pill status-pill--${key.replaceAll(" ", "-")} ${key === statusKey ? "status-pill--selected" : ""}`}>
+                          {code}
+                        </span>
+                      ))}
+                      <span className="status-caption">{statusText}</span>
                     </div>
                   </div>
                 </div>
@@ -142,10 +204,11 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                   <div className="habitat">
                     <div className="country-territory">{animal.nativeRegion ?? "Unknown region"}</div>
                     <div className="specific-region-of">
-                      {animal.habitatDescription ?? "No habitat description available"}
+                      {expandableText("habitat", animal.habitatDescription ?? "No habitat description available", "habitat-copy")}
                     </div>
                   </div>
                   <div className="taxonomic-badge" aria-label={taxonomicLabel}>
+                    <img src={TAXONOMIC_ICONS[animal.taxonomicGroup]} alt="" />
                     <span>{taxonomicLabel}</span>
                   </div>
                 </div>
@@ -158,18 +221,9 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                   </div>
                   <div className="fun-fact-card">
                     <div className="fun-fact-container">
-                      <div className="add-fun-fact-here">{shownDescription}</div>
+                      {expandableText("description", description, "add-fun-fact-here")}
                     </div>
                   </div>
-                  {description.length > 260 && (
-                    <button
-                      type="button"
-                      className="read-more-btn"
-                      onClick={() => setIsExpanded((value) => !value)}
-                    >
-                      {isExpanded ? "READ LESS" : "READ MORE"}
-                    </button>
-                  )}
                 </div>
               )}
 
@@ -180,7 +234,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                   </div>
                   <div className="fun-fact-card">
                     <div className="fun-fact-container">
-                      <div className="add-fun-fact-here">{animal.funFact}</div>
+                      {expandableText("funFact", animal.funFact, "add-fun-fact-here")}
                     </div>
                   </div>
                 </div>
@@ -208,7 +262,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                 </div>
                 <div className="quick-stats">
                   <div className="stat-card">
-                    <img className="icon" alt="Weight icon" src="/length.svg" />
+                    <img className="icon" alt="Weight icon" src="/weight.svg" />
                     <div className="card-content">
                       <div className="div-wrapper-2">
                         <div className="text-wrapper-6">WEIGHT</div>
