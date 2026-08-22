@@ -14,6 +14,9 @@ const TAXONOMIC_ICONS: Record<string, string> = {
   bird: "/images/bird-active.png",
   invertebrate: "/images/invertebrate-active.png",
 };
+const MISSING_PHOTO_ICON = "https://www.figma.com/api/mcp/asset/56b8d02b-a140-40ca-9929-607d9fd188e8.svg";
+const PHOTO_BACK_ICON = "https://www.figma.com/api/mcp/asset/a2bf6c5d-774c-4bf4-b410-5423f57b502a.svg";
+const PHOTO_FORWARD_ICON = "https://www.figma.com/api/mcp/asset/5c1aba6b-82d2-4cc7-ae80-41e97f55899d.svg";
 
 type AnimalDetailOptionalFields = {
   description?: string;
@@ -65,7 +68,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [activeMedia, setActiveMedia] = useState<"video" | "photo" | "audio">("video");
 
-  const description = animal.description ?? animal.habitatDescription ?? "";
+  const description = animal.description ?? "";
   const photoSource = normalizePhotoUrl(animal.photoUrl);
   const statusKey = animal.conservationStatus?.toLowerCase() ?? "least concern";
   const resolvedStatusIcon = CONSERVATION_STATUS_ICONS[statusKey] ?? animal.conservationStatusIcon ?? "/Least-Concern.svg";
@@ -131,12 +134,18 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
               <img className="animal-photo" src={photoSource} alt={animal.commonName} />
             ) : (
               <div className="animal-empty-state">
-                <img src="/Missing-Data.svg" alt="" />
-                <div>
+                <button type="button" className="photo-nav-button" aria-label="Previous photo">
+                  <img src={PHOTO_BACK_ICON} alt="" />
+                </button>
+                <img className="missing-photo-icon" src={MISSING_PHOTO_ICON} alt="" />
+                <div className="missing-photo-copy">
                   <strong>No Photo Available</strong>
                   <p>We’re currently updating this animal’s image.</p>
                   <p>Please explore another species.</p>
                 </div>
+                <button type="button" className="photo-nav-button" aria-label="Next photo">
+                  <img src={PHOTO_FORWARD_ICON} alt="" />
+                </button>
               </div>
             )}
           </div>
@@ -181,7 +190,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                     </div>
                   </div>
                   <div className="species-conservation">
-                    <div className="iucn-status-row">
+                    <div className={`iucn-status-row status-row--${statusKey.replaceAll(" ", "-")}`}>
                       {[
                         ["EX", "extinct"], ["EW", "extinct in the wild"], ["CR", "critically endangered"],
                         ["EN", "endangered"], ["VU", "vulnerable"], ["NT", "near threatened"], ["LC", "least concern"],
