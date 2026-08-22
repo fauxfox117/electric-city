@@ -65,7 +65,7 @@ const CONSERVATION_STATUS_ICONS: Record<string, string> = {
 
 export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
   const animal = loaderData.animal as typeof loaderData.animal & AnimalDetailOptionalFields;
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+  const [readMoreContent, setReadMoreContent] = useState<{ title: string; text: string } | null>(null);
   const [activeMedia, setActiveMedia] = useState<"video" | "photo" | "audio">("video");
 
   const description = animal.description ?? "";
@@ -84,31 +84,32 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
 
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setReadMoreContent(null);
+    }
+
+    document.addEventListener("keydown", closeOnEscape);
+
     return () => {
+      document.removeEventListener("keydown", closeOnEscape);
       document.body.style.overflow = previousBodyOverflow;
       document.documentElement.style.overflow = previousHtmlOverflow;
     };
   }, []);
 
-  function expandableText(section: string, text: string, className: string) {
-    const expanded = expandedSections.has(section);
-    const canExpand = text.length > 180;
+  function expandableText(title: string, text: string, className: string, threshold = 180) {
+    const canExpand = text.length > threshold;
 
     return (
       <>
-        <div className={`${className}${expanded ? " is-expanded" : ""}`}>{text}</div>
+        <div className={className}>{canExpand ? truncate(text) : text}</div>
         {canExpand && (
           <button
             type="button"
             className="read-more-btn"
-            onClick={() => setExpandedSections((previous) => {
-              const next = new Set(previous);
-              if (next.has(section)) next.delete(section);
-              else next.add(section);
-              return next;
-            })}
+            onClick={() => setReadMoreContent({ title, text })}
           >
-            {expanded ? "READ LESS" : "READ MORE"}
+            READ MORE
           </button>
         )}
       </>
@@ -211,9 +212,9 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                 </div>
                 <div className="section-content-2">
                   <div className="habitat">
-                    <div className="country-territory">{animal.nativeRegion ?? "Unknown region"}</div>
+                    {expandableText("nativeRegion", animal.nativeRegion ?? "Unknown region", "country-territory")}
                     <div className="specific-region-of">
-                      {expandableText("habitat", animal.habitatDescription ?? "No habitat description available", "habitat-copy")}
+                      {expandableText("Habitat", animal.habitatDescription ?? "No habitat description available", "habitat-copy")}
                     </div>
                   </div>
                   <div className="taxonomic-badge" aria-label={taxonomicLabel}>
@@ -230,7 +231,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                   </div>
                   <div className="fun-fact-card">
                     <div className="fun-fact-container">
-                      {expandableText("description", description, "add-fun-fact-here")}
+                      {expandableText("Description", description, "add-fun-fact-here")}
                     </div>
                   </div>
                 </div>
@@ -243,7 +244,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                   </div>
                   <div className="fun-fact-card">
                     <div className="fun-fact-container">
-                      {expandableText("funFact", animal.funFact, "add-fun-fact-here")}
+                      {expandableText("Fun Fact", animal.funFact, "add-fun-fact-here")}
                     </div>
                   </div>
                 </div>
@@ -258,7 +259,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                     {keyThreats.map((threat) => (
                       <div key={threat} className="bullet">
                         <span className="threat-dot" aria-hidden="true" />
-                        <div className="bullet-point">{threat}</div>
+                        {expandableText("Key Threat", threat, "bullet-point")}
                       </div>
                     ))}
                   </div>
@@ -277,7 +278,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                         <div className="text-wrapper-6">WEIGHT</div>
                       </div>
                       <div className="div-wrapper-2">
-                        <div className="text-wrapper-7">{animal.weight ?? "Unknown"}</div>
+                        {expandableText("Weight", animal.weight ?? "Unknown", "text-wrapper-7", 25)}
                       </div>
                     </div>
                   </div>
@@ -289,7 +290,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                         <div className="text-wrapper-6">LENGTH</div>
                       </div>
                       <div className="div-wrapper-2">
-                        <div className="text-wrapper-7">{animal.length ?? "Unknown"}</div>
+                        {expandableText("Length", animal.length ?? "Unknown", "text-wrapper-7", 25)}
                       </div>
                     </div>
                   </div>
@@ -301,7 +302,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                         <div className="text-wrapper-6">LIFESPAN</div>
                       </div>
                       <div className="div-wrapper-2">
-                        <div className="number-of-years">{animal.lifespan ?? "Unknown"}</div>
+                        {expandableText("Lifespan", animal.lifespan ?? "Unknown", "number-of-years", 25)}
                       </div>
                     </div>
                   </div>
@@ -313,7 +314,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                         <div className="text-wrapper-6">DIET</div>
                       </div>
                       <div className="div-wrapper-2">
-                        <div className="text-wrapper-7">{animal.diet ?? "Unknown"}</div>
+                        {expandableText("Diet", animal.diet ?? "Unknown", "text-wrapper-7", 25)}
                       </div>
                     </div>
                   </div>
@@ -323,6 +324,34 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
           </div>
         </div>
       </section>
+
+      {readMoreContent && (
+        <div
+          className="read-more-modal-backdrop"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setReadMoreContent(null);
+          }}
+        >
+          <section
+            className="read-more-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="read-more-modal-title"
+          >
+            <button
+              type="button"
+              className="read-more-modal-close"
+              onClick={() => setReadMoreContent(null)}
+              aria-label="Close expanded content"
+            >
+              <img src={CLOSE_ICON} alt="" />
+            </button>
+            <h2 id="read-more-modal-title">{readMoreContent.title}</h2>
+            <p>{readMoreContent.text}</p>
+          </section>
+        </div>
+      )}
     </main>
   );
 }

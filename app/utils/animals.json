@@ -16,7 +16,11 @@
         "River pollution"
       ],
       "funFact": "One of the most popular aquarium fish in the world, originally collected from Venezuelan rivers.",
-      "estimatedWildPopulation": "Population stable, exact numbers not formally assessed"
+      "estimatedWildPopulation": "Population stable, exact numbers not formally assessed",
+      "weight": "Up to 100 grams",
+      "length": "Up to 3.5 cm (1.4 inches)",
+      "lifespan": "Approximately 5 years in the wild",
+      "diet": "Omnivorous, feeding on small invertebrates, plant matter, and detritus"
     },
     {
       "id": "orinoco-crocodile-001",
@@ -35,7 +39,11 @@
         "Accidental capture in fishing nets"
       ],
       "funFact": "One of the largest crocodile species in the world and one of the most endangered reptiles in South America.",
-      "estimatedWildPopulation": "Fewer than 250 mature individuals"
+      "estimatedWildPopulation": "Fewer than 250 mature individuals",
+      "weight": "Up to 400 kg (880 lbs)",
+      "length": "Up to 5.2 m (17 ft)",
+      "lifespan": "Up to 70 years in the wild",
+      "diet": "Carnivorous, feeding on fish, birds, and small mammals"
     },
     {
       "id": "venezuelan-harlequin-frog-001",
@@ -50,7 +58,11 @@
       "conservationStatusIcon": "/Critically-Endangered.svg",
       "threats": ["Chytrid fungus disease", "Climate change", "Habitat loss"],
       "funFact": "Once thought extinct for years until small surviving populations were rediscovered in the Coastal Cordillera.",
-      "estimatedWildPopulation": "Fewer than 500 mature individuals, estimated"
+      "estimatedWildPopulation": "Fewer than 500 mature individuals, estimated",
+      "weight": "Up to 10 grams",
+      "length": "Up to 3.5 cm (1.4 inches)",
+      "lifespan": "Approximately 5 years in the wild",
+      "diet": "Insectivorous, feeding on small insects and arthropods"
     },
     {
       "id": "spectacled-bear-001",
@@ -64,7 +76,11 @@
       "conservationStatusIcon": "/Vulnerable.svg",
       "threats": ["Habitat loss", "Conflict with cattle farming", "Poaching"],
       "funFact": "The only bear species native to South America, considered a conservation symbol in the Venezuelan Andes.",
-      "estimatedWildPopulation": "Roughly 2,500 to 10,000 individuals across the Andes"
+      "estimatedWildPopulation": "Roughly 2,500 to 10,000 individuals across the Andes",
+      "weight": "Up to 140 kg (310 lbs)",
+      "length": "Up to 1.8 m (5.9 ft)",
+      "lifespan": "Up to 25 years in the wild",
+      "diet": "Omnivorous, feeding on fruits, plants, insects, and small mammals"
     },
     {
       "id": "venezuelan-troupial-001",
@@ -78,7 +94,11 @@
       "conservationStatusIcon": "/Least-Concern.svg",
       "threats": ["Illegal capture for the pet trade", "Habitat loss"],
       "funFact": "The national bird of Venezuela, known for its melodic song and striking black-and-orange plumage.",
-      "estimatedWildPopulation": "Population stable, not formally quantified"
+      "estimatedWildPopulation": "Population stable, not formally quantified",
+      "weight": "Up to 70 grams",
+      "length": "Up to 25 cm (9.8 inches)",
+      "lifespan": "Approximately 10 years in the wild",
+      "diet": "Omnivorous, feeding on fruits, insects, and small vertebrates"
     }
   ]
 }
