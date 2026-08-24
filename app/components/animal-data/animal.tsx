@@ -14,9 +14,9 @@ const TAXONOMIC_ICONS: Record<string, string> = {
   bird: "/images/bird-active.png",
   invertebrate: "/images/invertebrate-active.png",
 };
-const MISSING_PHOTO_ICON = "https://www.figma.com/api/mcp/asset/56b8d02b-a140-40ca-9929-607d9fd188e8.svg";
-const PHOTO_BACK_ICON = "https://www.figma.com/api/mcp/asset/a2bf6c5d-774c-4bf4-b410-5423f57b502a.svg";
-const PHOTO_FORWARD_ICON = "https://www.figma.com/api/mcp/asset/5c1aba6b-82d2-4cc7-ae80-41e97f55899d.svg";
+const MISSING_PHOTO_ICON = "/Missing-photo.svg";
+const PHOTO_BACK_ICON = "/photo-back-btn.svg";
+const PHOTO_FORWARD_ICON = "/photo-forward-btn.svg";
 
 type AnimalDetailOptionalFields = {
   description?: string;
@@ -42,7 +42,7 @@ function truncate(text: string, max = 260) {
 function normalizePhotoUrl(raw?: string) {
   if (!raw || !raw.trim()) return "/Missing-Data.svg";
   if (/^https?:\/\//i.test(raw)) return raw;
-  const normalized = raw.trim().replace(/^\.?\//, "");
+  const normalized = raw.trim().replace(/^\.?\/public\//, "").replace(/^\.?\//, "");
   return `/${normalized}`;
 }
 

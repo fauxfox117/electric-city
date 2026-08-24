@@ -47,23 +47,35 @@ const CATEGORY_LABELS: Record<MapCategory, string> = {
   invertebrates: "Invertebrates",
 };
 
-const DISPLAY_COUNTS: Record<MapCategory, number> = {
-  fish: 135,
-  reptiles: 60,
-  amphibians: 18,
-  birds: 7,
-  mammals: 5,
-  invertebrates: 25,
-};
-
 const DEFAULT_FILTERS: MapCategory[] = Object.keys(CATEGORY_LABELS) as MapCategory[];
 
 const ID_POSITIONS: Record<string, MarkerPoint> = {
-  "orinoco-crocodile-001": { x: 26, y: 63 },        // Orinoco basin, Colombia/Venezuela border
-  "venezuelan-harlequin-frog-001": { x: 31, y: 49 }, // Coastal Cordillera, northern Venezuela
-  "spectacled-bear-001": { x: 22, y: 68 },           // Andes, Peru/Colombia range
-  "venezuelan-troupial-001": { x: 35, y: 56 },       // Llanos, eastern Venezuela/Trinidad
+  "Cardinal-Tetra-001": { x: 31, y: 55 },             // Orinoco River, Venezuela
+  "orinoco-crocodile-001": { x: 31, y: 56 },          // Orinoco basin, Venezuela and Colombia
+  "venezuelan-harlequin-frog-001": { x: 31, y: 52 },  // Coastal Cordillera, Venezuela
+  "spectacled-bear-001": { x: 31, y: 54 },            // Andes Mountains, Venezuela
+  "venezuelan-troupial-001": { x: 32, y: 56 },        // Llanos, Venezuela
+  "cheetah-001": { x: 55, y: 56 },                    // Sub-Saharan Africa
+  "red-panda-001": { x: 76, y: 42 },                  // Himalayas and southwestern China
+  "zebra-shark-001": { x: 82, y: 57 },                // Indo-Pacific, northern Australia
 };
+
+const REGION_POSITIONS: Array<{ keywords: string[]; position: MarkerPoint }> = [
+  { keywords: ["greenland", "arctic", "north pole"], position: { x: 34, y: 18 } },
+  { keywords: ["alaska", "canada", "north america", "united states", "usa"], position: { x: 22, y: 36 } },
+  { keywords: ["mexico", "central america", "caribbean", "cuba", "bahamas"], position: { x: 28, y: 50 } },
+  { keywords: ["south america", "amazon", "brazil", "colombia", "venezuela", "ecuador", "peru", "bolivia", "andes", "orinoco", "llanos"], position: { x: 31, y: 62 } },
+  { keywords: ["europe", "united kingdom", "uk", "ireland", "france", "germany", "italy", "spain", "scandinavia", "mediterranean"], position: { x: 48, y: 34 } },
+  { keywords: ["north africa", "sahara", "morocco", "algeria", "egypt", "libya", "tunisia"], position: { x: 53, y: 43 } },
+  { keywords: ["sub-saharan africa", "central africa", "east africa", "west africa", "south africa", "africa", "kenya", "tanzania", "nigeria", "congo", "madagascar"], position: { x: 55, y: 57 } },
+  { keywords: ["middle east", "arabia", "iran", "iraq", "israel", "jordan", "turkey"], position: { x: 61, y: 41 } },
+  { keywords: ["india", "indian subcontinent", "himalaya", "nepal", "bhutan", "bangladesh", "pakistan"], position: { x: 70, y: 47 } },
+  { keywords: ["china", "east asia", "japan", "korea", "mongolia", "tibet"], position: { x: 78, y: 41 } },
+  { keywords: ["southeast asia", "indonesia", "philippines", "malaysia", "thailand", "vietnam", "cambodia", "borneo"], position: { x: 79, y: 54 } },
+  { keywords: ["indo-pacific", "indian ocean", "pacific ocean", "coral triangle", "red sea"], position: { x: 82, y: 56 } },
+  { keywords: ["australia", "new zealand", "oceania", "melanesia", "micronesia", "polynesia"], position: { x: 85, y: 68 } },
+  { keywords: ["antarctica", "antarctic"], position: { x: 55, y: 94 } },
+];
 
 function mapCategory(group: Animal["taxonomicGroup"]): MapCategory {
   if (group === "fish") return "fish";
@@ -77,9 +89,11 @@ function mapCategory(group: Animal["taxonomicGroup"]): MapCategory {
 function fallbackPosition(nativeRegion: string): MarkerPoint {
   const region = nativeRegion.toLowerCase();
 
-  if (region.includes("andes")) return { x: 28, y: 60 };
-  if (region.includes("coastal")) return { x: 32, y: 55 };
-  if (region.includes("orinoco") || region.includes("venezuela")) return { x: 31, y: 57 };
+  const matchingRegion = REGION_POSITIONS.find(({ keywords }) =>
+    keywords.some((keyword) => region.includes(keyword))
+  );
+
+  if (matchingRegion) return matchingRegion.position;
 
   return { x: 50, y: 50 };
 }
@@ -124,7 +138,17 @@ export function InteractiveMap({ animals }: InteractiveMapProps) {
     });
   }, [animals]);
 
-  const counts = useMemo<Record<MapCategory, number>>(() => ({ ...DISPLAY_COUNTS }), []);
+  const counts = useMemo<Record<MapCategory, number>>(() => {
+    const categoryCounts = Object.fromEntries(
+      DEFAULT_FILTERS.map((category) => [category, 0])
+    ) as Record<MapCategory, number>;
+
+    for (const marker of markers) {
+      categoryCounts[marker.category] += 1;
+    }
+
+    return categoryCounts;
+  }, [markers]);
 
   const visibleMarkers = useMemo(
     () => markers.filter((marker) => activeFilters.has(marker.category)),
@@ -158,7 +182,7 @@ export function InteractiveMap({ animals }: InteractiveMapProps) {
   }
 
   function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
-    if (zoom <= 1) return;
+    if (zoom <= 1 || (e.target instanceof Element && e.target.closest("button, a"))) return;
     drag.current = { active: true, startX: e.clientX, startY: e.clientY, fromX: pan.x, fromY: pan.y };
     e.currentTarget.setPointerCapture(e.pointerId);
 }
@@ -208,8 +232,11 @@ function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
   setPan({ x: clampedX, y: clampedY });
 }
 
-function handlePointerUp() {
+function handlePointerUp(e: React.PointerEvent<HTMLDivElement>) {
   drag.current.active = false;
+  if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+    e.currentTarget.releasePointerCapture(e.pointerId);
+  }
 }
 
 return (
@@ -219,7 +246,7 @@ return (
         <img src={ARROW_ICON_DEFAULT} alt="" className="imap-back-btn-icon" />
       </Link>
       <h1 className="imap-title">World Wildlife Map</h1>
-      <p className="imap-total">Total species: 250</p>
+      <p className="imap-total">Total species: {animals.length}</p>
     </header>
 
     <div className="imap-stage">   {/* ← restore this, remove the comment */}
@@ -229,6 +256,7 @@ return (
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
       >
 
         {/* imap-map} */} 
@@ -299,7 +327,7 @@ return (
             </div>
           </div>
 
-          <aside className="imap-categories">
+          <aside className="imap-categories" onPointerDown={(e) => e.stopPropagation()}>
             <h2 className="imap-panel-title">Categories</h2>
             <ul className="imap-category-list">
               {(Object.keys(CATEGORY_LABELS) as MapCategory[]).map((category) => {

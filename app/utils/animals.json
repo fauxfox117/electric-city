@@ -4,7 +4,7 @@
       "id": "Cardinal-Tetra-001",
       "commonName": "Cardinal Tetra",
       "scientificName": "Paracheirodon axelrodi",
-      "photoUrl": "",
+      "photoUrl": "/animal-images/cardinal-tetra.jpg",
 
       "taxonomicGroup": "fish",
       "nativeRegion": "Orinoco River, Venezuela",
@@ -26,7 +26,7 @@
       "id": "orinoco-crocodile-001",
       "commonName": "Orinoco Crocodile",
       "scientificName": "Crocodylus intermedius",
-      "photoUrl": "",
+      "photoUrl": "/animal-images/orinoco-crocodile.webp",
 
       "taxonomicGroup": "reptile",
       "nativeRegion": "Orinoco River Basin, Venezuela and Colombia",
@@ -49,7 +49,7 @@
       "id": "venezuelan-harlequin-frog-001",
       "commonName": "Venezuelan Harlequin Frog",
       "scientificName": "Atelopus cruciger",
-      "photoUrl": "",
+      "photoUrl": "/animal-images/venezuelan-harlequin-frog.jpg",
 
       "taxonomicGroup": "amphibian",
       "nativeRegion": "Coastal Cordillera, Venezuela",
@@ -86,7 +86,7 @@
       "id": "venezuelan-troupial-001",
       "commonName": "Venezuelan Troupial",
       "scientificName": "Icterus icterus",
-      "photoUrl": "",
+      "photoUrl": "/animal-images/venezuelan-troupial.jpg",
       "taxonomicGroup": "bird",
       "nativeRegion": "Llanos and coastal areas, Venezuela",
       "habitatDescription": "Open savannas, dry forests, and urban areas with scattered trees.",
@@ -99,6 +99,134 @@
       "length": "Up to 25 cm (9.8 inches)",
       "lifespan": "Approximately 10 years in the wild",
       "diet": "Omnivorous, feeding on fruits, insects, and small vertebrates"
+    },
+    {
+      "id": "cheetah-001",
+      "commonName": "Cheetah",
+      "scientificName": "Acinonyx jubatus",
+      "photoUrl": "/animal-images/cheetah.jpg",
+      "taxonomicGroup": "mammal",
+      "nativeRegion": "Sub-Saharan Africa and parts of Iran",
+      "habitatDescription": "Open savannas, grasslands, and arid regions.",
+      "conservationStatus": "Vulnerable",
+      "conservationStatusIcon": "/Vulnerable.svg",
+      "threats": [
+        "Habitat loss",
+        "Human-wildlife conflict",
+        "Illegal wildlife trade"
+      ],
+      "funFact": "The fastest land animal, capable of reaching speeds up to 112 km/h (70 mph).",
+      "estimatedWildPopulation": "Approximately 7,100 individuals",
+      "weight": "Up to 72 kg (159 lbs)",
+      "length": "Up to 1.5 m (4.9 ft)",
+      "lifespan": "Up to 12 years in the wild",
+      "diet": "Carnivorous, primarily feeding on small to medium-sized ungulates"
+    },
+    {
+      "id": "red-panda-001",
+      "commonName": "Red Panda",
+      "scientificName": "Ailurus fulgens",
+      "photoUrl": "/animal-images/red-panda.jpg",
+      "taxonomicGroup": "mammal",
+      "nativeRegion": "Himalayas and southwestern China",
+      "habitatDescription": "Temperate forests with dense bamboo understories.",
+      "conservationStatus": "Endangered",
+      "conservationStatusIcon": "/Endangered.svg",
+      "threats": [
+        "Habitat loss due to deforestation",
+        "Poaching for fur and pet trade",
+        "Inbreeding and low genetic diversity"
+      ],
+      "funFact": "Despite its name, the red panda is not closely related to the giant panda and is the only living member of its genus.",
+      "estimatedWildPopulation": "Fewer than 10,000 mature individuals",
+      "weight": "Up to 6 kg (13 lbs)",
+      "length": "Up to 60 cm (24 inches) excluding tail",
+      "lifespan": "Up to 14 years in the wild",
+      "diet": "Primarily herbivorous, feeding on bamboo, fruits, berries, and occasionally small mammals and birds"
+    },
+    {
+      "id": "zebra-shark-001",
+      "commonName": "Zebra Shark",
+      "scientificName": "Stegostoma fasciatum",
+      "photoUrl": "/animal-images/zebra-shark.jpg",
+      "taxonomicGroup": "fish",
+      "nativeRegion": "Indo-Pacific region, including the Red Sea and northern Australia",
+      "habitatDescription": "Coral reefs and sandy bottoms of shallow coastal waters.",
+      "conservationStatus": "Endangered",
+      "conservationStatusIcon": "/Endangered.svg",
+      "threats": [
+        "Overfishing for meat and fins",
+        "Habitat degradation due to coral reef destruction"
+      ],
+      "funFact": "Zebra sharks are nocturnal and often rest on the sea floor during the day, and they are known for their distinctive juvenile striped pattern that changes to spots as they  mature.",
+      "estimatedWildPopulation": "Population declining, exact numbers unknown",
+      "weight": "Up to 30 kg (66 lbs)",
+      "length": "Up to 2.5 m (8.2 ft)",
+      "lifespan": "Up to 25 years in the wild",
+      "diet": "Carnivorous, feeding on mollusks, crustaceans, and small fish"
+    },
+    {
+      "id": "water-dragon-001",
+      "commonName": "Water Dragon",
+      "scientificName": "Physignathus cocincinus",
+      "photoUrl": "/animal-images/water-dragon.jpg",
+      "taxonomicGroup": "reptile",
+      "nativeRegion": "Southeast Asia, including Thailand, Vietnam, and Cambodia",
+      "habitatDescription": "Tropical forests and riverbanks, often near water sources.",
+      "conservationStatus": "Least Concern",
+      "conservationStatusIcon": "/Least-Concern.svg",
+      "threats": [
+        "Habitat loss due to deforestation",
+        "Capture for the pet trade"
+      ],
+      "funFact": "Water dragons are excellent swimmers and can stay submerged for up to 30 minutes, using their tails to propel themselves through the water.",
+      "estimatedWildPopulation": "Population stable, not formally quantified",
+      "weight": "Up to 1.5 kg (3.3 lbs)",
+      "length": "Up to 1 m (3.3 ft) including tail",
+      "lifespan": "Up to 10 years in the wild",
+      "diet": "Omnivorous, feeding on insects, small vertebrates, fruits, and vegetation"
+    },
+    {
+      "id": "pancake-tortoise-001",
+      "commonName": "Pancake Tortoise",
+      "scientificName": "Malacochersus tornieri",
+      "photoUrl": "/animal-images/pancake-tortoise.png",
+      "taxonomicGroup": "reptile",
+      "nativeRegion": "East Africa, particularly in Kenya and Tanzania",
+      "habitatDescription": "Rocky outcrops and savannas, often found in areas with loose rocks and crevices.",
+      "conservationStatus": "Vulnerable",
+      "conservationStatusIcon": "/Vulnerable.svg",
+      "threats": [
+        "Illegal collection for the pet trade",
+        "Habitat loss due to agriculture and human settlement"
+      ],
+      "funFact": "Pancake tortoises have a unique flat shell that allows them to squeeze into narrow rock crevices for protection from predators.",
+      "estimatedWildPopulation": "Population declining, exact numbers unknown",
+      "weight": "Up to 0.5 kg (1.1 lbs)",
+      "length": "Up to 15 cm (5.9 inches)",
+      "lifespan": "Up to 20 years in the wild",
+      "diet": "Herbivorous, feeding on grasses, leaves, and fruits"
+    },
+    {
+      "id": "hyacinth-macaw-001",
+      "commonName": "Hyacinth Macaw",
+      "scientificName": "Anodorhynchus hyacinthinus",
+      "photoUrl": "/animal-images/hyacinth-macaw.jpg",
+      "taxonomicGroup": "bird",
+      "nativeRegion": "Central and eastern South America, particularly in Brazil, Bolivia, and Paraguay",
+      "habitatDescription": "Tropical savannas, palm swamps, and forests, often near rivers and wetlands.",
+      "conservationStatus": "Vulnerable",
+      "conservationStatusIcon": "/Vulnerable.svg",
+      "threats": [
+        "Illegal capture for the pet trade",
+        "Habitat loss due to deforestation and agriculture"
+      ],
+      "funFact": "The hyacinth macaw is the largest flying parrot species in the world, known for its striking cobalt-blue plumage and powerful beak capable of cracking hard nuts.",
+      "estimatedWildPopulation": "Approximately 6,500 individuals",
+      "weight": "Up to 1.5 kg (3.3 lbs)",
+      "length": "Up to 1 m (3.3 ft)",
+      "lifespan": "Up to 50 years in the wild",
+      "diet": "Primarily herbivorous, feeding on nuts, seeds, fruits, and berries, with occasional consumption of insects"
     }
   ]
 }
