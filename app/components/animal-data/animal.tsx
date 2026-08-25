@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { data, Link } from "react-router";
+import { useIdleRedirect } from "~/hooks/useIdleRedirect";
 import { getAnimalById } from "~/utils/api";
 import type { Route } from "./+types/animal";
 import "./animal.css";
@@ -57,6 +58,9 @@ const CONSERVATION_STATUS_ICONS: Record<string, string> = {
 };
 
 export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
+
+  useIdleRedirect(120000);
+
   const animal = loaderData.animal as typeof loaderData.animal & AnimalDetailOptionalFields;
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeMedia, setActiveMedia] = useState<"video" | "photo" | "audio">("video");

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
+import { useIdleRedirect } from "~/hooks/useIdleRedirect";
 import type { Animal } from "~/utils/types";
 import "./InteractiveMap.css";
 
@@ -89,6 +90,9 @@ function markerIcon(category: MapCategory): string {
 }
 
 export function InteractiveMap({ animals }: InteractiveMapProps) {
+
+  useIdleRedirect(120000);
+
   const [activeFilters, setActiveFilters] = useState<Set<MapCategory>>(
     new Set(DEFAULT_FILTERS)
   );
