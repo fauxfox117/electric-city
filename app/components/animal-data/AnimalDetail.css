@@ -12,7 +12,8 @@
 
 .animal-screen {
   max-width: 1920px;
-  height: 100dvh;
+  height: min(100dvh, 1080px, 56.25vw);
+  max-height: 1080px;
   margin: 0 auto;
   padding: 0 28px 32px;
   box-sizing: border-box;
@@ -20,6 +21,8 @@
   color: var(--dark);
   font-family: "Work Sans", "Segoe UI", sans-serif;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .animal-topbar {
@@ -79,6 +82,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 32px;
   margin-top: 30px;
+  flex: 1;
   min-height: 0;
 }
 
@@ -89,7 +93,7 @@
 }
 
 .animal-hero-media {
-  height: 857px;
+  height: 100%;
   border-radius: 16px;
   overflow: hidden;
   background: var(--white);
@@ -200,7 +204,7 @@
 
 .animal-data-card {
   width: 100%;
-  height: 857px;
+  height: 100%;
   min-height: 0;
   background: #ffffff;
   border: 2px solid var(--panel-border);
@@ -552,7 +556,7 @@
 }
 
 .threats-panel {
-  gap: 10px;
+  gap: 6px;
 }
 
 .threats-grid {
@@ -667,11 +671,44 @@
   white-space: normal;
 }
 
+@media (min-width: 1101px) and (max-width: 1200px) {
+  .animal-screen {
+    min-height: 100dvh;
+    height: auto;
+    max-height: none;
+    overflow: auto;
+  }
+
+  .animal-layout {
+    flex: none;
+    height: auto;
+  }
+
+  .animal-hero-media {
+    min-height: 360px;
+    height: 70dvh;
+  }
+
+  .animal-detail-panel,
+  .animal-data-card,
+  .content {
+    height: auto;
+  }
+
+  .animal-detail-panel,
+  .animal-data-card,
+  .content {
+    overflow: visible;
+  }
+}
+
 @media (max-width: 1100px) {
   .animal-screen {
-    height: 100dvh;
     padding: 0 28px 32px;
-    overflow: hidden;
+    min-height: 100dvh;
+    height: auto;
+    max-height: none;
+    overflow: auto;
   }
 
   .animal-topbar {
@@ -702,15 +739,35 @@
   }
 
   .animal-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: 1fr;
     gap: 35px;
-    height: calc(100dvh - 119px);
     margin-top: 33px;
+    flex: none;
+    height: auto;
   }
 
   .animal-hero-media,
   .animal-data-card {
-    height: 100%;
+    height: auto;
+  }
+
+  .animal-hero-media {
+    min-height: 360px;
+    height: 44dvh;
+  }
+
+  .animal-detail-panel {
+    height: auto;
+    overflow: visible;
+  }
+
+  .animal-data-card {
+    overflow: visible;
+  }
+
+  .content {
+    height: auto;
+    overflow: visible;
   }
 
   .animal-empty-state {
@@ -751,10 +808,6 @@
   .animal-data-card {
     padding: 8px;
     border-radius: 10px;
-  }
-
-  .content {
-    overflow: hidden;
   }
 
   .div-2,
@@ -902,6 +955,28 @@
   }
 }
 
+@media (max-width: 900px) {
+  .animal-screen {
+    height: 100dvh;
+    max-height: none;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 700px) {
+  .animal-screen {
+    padding-bottom: 16px;
+  }
+
+  .animal-topbar {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .animal-layout {
+    margin-top: 12px;
+  }
+}
+
 @media (max-width: 700px) {
   .animal-screen {
     padding: 0 10px 20px;
@@ -948,5 +1023,17 @@
 
   .animal-media-controls {
     flex-wrap: wrap;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1210px) {
+  .animal-screen {
+    zoom: 0.75;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    min-height: 133.333333dvh;
+    max-height: none;
+    overflow: auto;
   }
 }

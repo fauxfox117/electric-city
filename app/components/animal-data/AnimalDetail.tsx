@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { data, Link } from "react-router";
 import { getAnimalById } from "~/utils/api";
-import type { Route } from "./+types/animal";
-import "./animal.css";
+import type { Route } from "./+types/AnimalDetail";
+import "./AnimalDetail.css";
 
 const ARROW_ICON = "/round-arrow-back.png";
 const CLOSE_ICON = "/close-btn.png";
 const TAXONOMIC_ICONS: Record<string, string> = {
-  fish: "/images/fish-active.png",
-  reptile: "/images/reptile-active.png",
-  amphibian: "/images/amphibian-active.png",
-  mammal: "/images/mammal-active.png",
-  bird: "/images/bird-active.png",
-  invertebrate: "/images/invertebrate-active.png",
+  fish: "/images/fish.png",
+  reptile: "/images/reptiles.png",
+  amphibian: "/images/amphibians.png",
+  mammal: "/images/mammals.png",
+  bird: "/images/birds.png",
+  invertebrate: "/images/invertebretes.png",
 };
 const MISSING_PHOTO_ICON = "/Missing-photo.svg";
 const PHOTO_BACK_ICON = "/photo-back-btn.svg";

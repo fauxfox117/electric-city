@@ -3,14 +3,22 @@ import { Link } from "react-router";
 import type { Animal } from "~/utils/types";
 import "./InteractiveMap.css";
 
-const ARROW_ICON_DEFAULT = "https://www.figma.com/api/mcp/asset/648dddff-2472-4d23-9b97-50f302d71e7e.svg";
+const ARROW_ICON_DEFAULT = "./public/round-arrow-back.png";
 const CATEGORY_ICONS: Record<MapCategory, string> = {
   fish: "/images/fish.png",
-  reptiles: "/images/reptile.png",
-  amphibians: "/images/amphibian.png",
-  birds: "/images/bird.png",
-  mammals: "/images/mammal.png",
-  invertebrates: "/images/invertebrate.png",
+  reptiles: "/images/reptiles.png",
+  amphibians: "/images/amphibians.png",
+  birds: "/images/birds.png",
+  mammals: "/images/mammals.png",
+  invertebrates: "/images/invertebrates.png",
+};
+const CATEGORY_ACTIVE_ICONS: Record<MapCategory, string> = {
+  fish: "/images/fish.png",
+  reptiles: "/images/reptiles.png",
+  amphibians: "/images/amphibians.png",
+  birds: "/images/birds.png",
+  mammals: "/images/mammals.png",
+  invertebrates: "/images/invertebrates.png",
 };
 const PLUS_ICON = "/plus-icon.svg";
 const MINUS_ICON = "/minus-icon.svg";
@@ -50,14 +58,16 @@ const CATEGORY_LABELS: Record<MapCategory, string> = {
 const DEFAULT_FILTERS: MapCategory[] = Object.keys(CATEGORY_LABELS) as MapCategory[];
 
 const ID_POSITIONS: Record<string, MarkerPoint> = {
-  "Cardinal-Tetra-001": { x: 31, y: 55 },             // Orinoco River, Venezuela
+  "Cardinal-Tetra-001": { x: 31, y: 68   },             // Orinoco River, Venezuela
   "orinoco-crocodile-001": { x: 31, y: 56 },          // Orinoco basin, Venezuela and Colombia
-  "venezuelan-harlequin-frog-001": { x: 31, y: 52 },  // Coastal Cordillera, Venezuela
-  "spectacled-bear-001": { x: 31, y: 54 },            // Andes Mountains, Venezuela
-  "venezuelan-troupial-001": { x: 32, y: 56 },        // Llanos, Venezuela
+  "venezuelan-harlequin-frog-001": { x: 33, y: 75  },  // Coastal Cordillera, Venezuela
+  "spectacled-bear-001": { x: 34, y: 63 },            // Andes Mountains, Venezuela
+  "venezuelan-troupial-001": { x: 28, y: 63 },        // Llanos, Venezuela
   "cheetah-001": { x: 55, y: 56 },                    // Sub-Saharan Africa
-  "red-panda-001": { x: 76, y: 42 },                  // Himalayas and southwestern China
+  "red-panda-001": { x: 76, y: 48 },                  // Himalayas and southwestern China
   "zebra-shark-001": { x: 82, y: 57 },                // Indo-Pacific, northern Australia
+  "pancake-tortoise-001": { x: 61, y: 76 },  // Madagascar
+  "hyacinth-macaw-001": { x: 37, y: 72 }  // South America, Pantanal, Brazil
 };
 
 const REGION_POSITIONS: Array<{ keywords: string[]; position: MarkerPoint }> = [
@@ -155,11 +165,6 @@ export function InteractiveMap({ animals }: InteractiveMapProps) {
     [markers, activeFilters]
   );
 
-  const selectedMarker = useMemo(() => {
-    if (!visibleMarkers.length || !selectedId) return null;
-    return visibleMarkers.find((item) => item.animal.id === selectedId) ?? null;
-  }, [selectedId, visibleMarkers]);
-
   function toggleFilter(category: MapCategory) {
     setActiveFilters((prev) => {
       const next = new Set(prev);
@@ -200,31 +205,16 @@ function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
 
   const vw = ovalRef.current.clientWidth;
   const vh = ovalRef.current.clientHeight;
-  const contentW = imageRef.current.clientWidth;
-  const contentH = imageRef.current.clientHeight;
+  const contentW = vw;
+  const contentH = vh;
 
   const scaledW = contentW * zoom;
   const scaledH = contentH * zoom;
 
-  // X axis clamp: if content narrower than viewport, center it
-  let minX: number, maxX: number;
-  if (scaledW <= vw) {
-    const centerX = (vw - scaledW) / 2;
-    minX = maxX = centerX;
-  } else {
-    minX = vw - scaledW; // negative
-    maxX = 0;
-  }
-
-  // Y axis clamp: if content shorter than viewport, center it
-  let minY: number, maxY: number;
-  if (scaledH <= vh) {
-    const centerY = (vh - scaledH) / 2;
-    minY = maxY = centerY;
-  } else {
-    minY = vh - scaledH;
-    maxY = 0;
-  }
+  const minX = scaledW <= vw ? (vw - scaledW) / 2 : vw - scaledW;
+  const maxX = scaledW <= vw ? minX : 0;
+  const minY = scaledH <= vh ? (vh - scaledH) / 2 : vh - scaledH;
+  const maxY = scaledH <= vh ? minY : 0;
 
   const clampedX = Math.max(minX, Math.min(maxX, nextX));
   const clampedY = Math.max(minY, Math.min(maxY, nextY));
@@ -273,16 +263,16 @@ return (
                   const id = marker.animal.id.trim();
                   const key = id || marker.animal.commonName + "-" + index;
                   
-                  const selected = selectedMarker?.animal.id === marker.animal.id;
+                  const selected = selectedId === marker.animal.id;
                   return (
-                    <button
+                    <Link
                       key={key}
-                      type="button"
-                      className={selected ? "imap-marker imap-marker-selected" : "imap-marker"}
+                      to={id ? "/map/" + id : "/map"}
+                      className={`${selected ? "imap-marker imap-marker-selected" : "imap-marker"}${zoom >= 1.5 ? " imap-marker-named" : ""}`}
                       style={{
                         left: marker.position.x + "%",
                         top: marker.position.y + "%",
-                        transform: `translate(-50%, -50%)`,
+                        transform: `translate(-50%, -50%) scale(${1 / zoom})`,
                         transformOrigin: "center",
                       }}
                       onPointerDown={(e) => e.stopPropagation()}
@@ -292,43 +282,22 @@ return (
                       <span
                         className="imap-marker-visual"
                         aria-hidden="true"
-                        style={{ transform: `scale(${1 / zoom})`, transformOrigin: "center" }}
                       >
                         <img src={markerIcon(marker.category)} alt="" />
                       </span>
-                    </button>
+                      <span className="imap-marker-name">{marker.animal.commonName}</span>
+                    </Link>
                   );
                 })}
               </div>
 
-              {selectedMarker &&
-                (selectedMarker.animal.id.trim() ? (
-                  <Link
-                    className="imap-selected-tag"
-                    to={"/map/" + selectedMarker.animal.id}
-                    style={{
-                      left: selectedMarker.position.x + "%",
-                      top: selectedMarker.position.y + "%",
-                    }}
-                  >
-                    {selectedMarker.animal.commonName.toUpperCase()}
-                  </Link>
-                ) : (
-                  <span
-                    className="imap-selected-tag"
-                    style={{
-                      left: selectedMarker.position.x + "%",
-                      top: selectedMarker.position.y + "%",
-                    }}
-                  >
-                    {selectedMarker.animal.commonName.toUpperCase()}
-                  </span>
-                ))}
             </div>
           </div>
 
           <aside className="imap-categories" onPointerDown={(e) => e.stopPropagation()}>
             <h2 className="imap-panel-title">Categories</h2>
+            <p className="imap-panel-note">Toggle icons to filter map view</p>
+
             <ul className="imap-category-list">
               {(Object.keys(CATEGORY_LABELS) as MapCategory[]).map((category) => {
                 const active = activeFilters.has(category);
@@ -342,7 +311,7 @@ return (
                     >
                       <span className="imap-category-label">
                         <span className="imap-category-icon" aria-hidden="true">
-                          <img src={markerIcon(category)} alt="" />
+                          <img src={active ? CATEGORY_ACTIVE_ICONS[category] : markerIcon(category)} alt="" />
                         </span>
                         {CATEGORY_LABELS[category]}
                       </span>
@@ -352,7 +321,6 @@ return (
                 );
               })}
             </ul>
-            <p className="imap-panel-note">Toggle icons to filter map view</p>
           </aside>
 
         </div>   {/* ← the imap-map closing div */}

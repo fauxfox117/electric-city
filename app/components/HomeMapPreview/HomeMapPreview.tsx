@@ -3,12 +3,12 @@
   import { TaxonomicIcon } from '../TaxonomicIcon/TaxonomicIcon';
 
   const categories = [
-  { id: 'amphibians', label: 'Amphibians', icon: '/images/amphibian.png', iconActive: '/images/amphibian-active.png' },
-  { id: 'fish', label: 'Fish', icon: '/images/fish.png', iconActive: '/images/fish-active.png' },
-  { id: 'reptiles', label: 'Reptiles', icon: '/images/reptile.png', iconActive: '/images/reptile-active.png' },
-  { id: 'mammals', label: 'Mammals', icon: '/images/mammal.png', iconActive: '/images/mammal-active.png' },
-  { id: 'birds', label: 'Birds', icon: '/images/bird.png', iconActive: '/images/bird-active.png' },
-  { id: 'invertebrates', label: 'Invertebrates', icon: '/images/invertebrate.png', iconActive: '/images/invertebrate-active.png' },
+  { id: 'amphibians', label: 'Amphibians', icon: '/images/amphibians.png', iconActive: '/images/amphibians.png' },
+  { id: 'fish', label: 'Fish', icon: '/images/fish.png', iconActive: '/images/fish.png' },
+  { id: 'reptiles', label: 'Reptiles', icon: '/images/reptiles.png', iconActive: '/images/reptiles.png' },
+  { id: 'mammals', label: 'Mammals', icon: '/images/mammals.png', iconActive: '/images/mammals.png' },
+  { id: 'birds', label: 'Birds', icon: '/images/birds.png', iconActive: '/images/birds.png' },
+  { id: 'invertebrates', label: 'Invertebrates', icon: '/images/invertebretes.png', iconActive: '/images/invertebretes.png' },
 ];
 
   export function HomeMapPreview() {

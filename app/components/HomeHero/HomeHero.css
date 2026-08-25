@@ -78,3 +78,15 @@
 .home-hero__cta-btn:hover {
   background-color: #1b7a6e;
 }
+
+@media (min-width: 701px) and (max-width: 1210px) {
+  .home-screen {
+    zoom: 0.7;
+    width: 90%;
+    max-width: none;
+    height: 120dvh;
+    min-height: 143dvh;
+    max-height: none;
+    overflow: auto;
+  }
+}
