@@ -17,6 +17,9 @@
 .taxonomic-icon__img {
   width: 24px;
   height: 24px;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(25%) sepia(92%) saturate(1880%)
+    hue-rotate(194deg) brightness(86%) contrast(101%);
 }
 
 .taxonomic-icon__label {
@@ -32,10 +35,14 @@
 }
 
 .taxonomic-icon--active {
-  background-color: #1565c0;
-  border: none;
+  background-color: #005fcb;
+  border-color: #005fcb;
 }
 
 .taxonomic-icon--active .taxonomic-icon__label {
   color: #ffffff;
+}
+
+.taxonomic-icon--active .taxonomic-icon__img {
+  filter: none;
 }

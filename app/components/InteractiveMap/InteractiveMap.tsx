@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { useIdleRedirect } from "~/hooks/useIdleRedirect";
 import type { Animal } from "~/utils/types";
 import "./InteractiveMap.css";
@@ -117,9 +117,23 @@ export function InteractiveMap({ animals }: InteractiveMapProps) {
 
   useIdleRedirect(120000);
 
-  const [activeFilters, setActiveFilters] = useState<Set<MapCategory>>(
-    new Set(DEFAULT_FILTERS)
-  );
+  const [searchParams] = useSearchParams();
+
+  const [activeFilters, setActiveFilters] = useState<Set<MapCategory>>(() => {
+    const categoryParam = searchParams.get("category") as MapCategory | null;
+    if (categoryParam && DEFAULT_FILTERS.includes(categoryParam)) {
+      return new Set([categoryParam]);
+    }
+    return new Set(DEFAULT_FILTERS);
+  });
+
+  useEffect(() => {
+    const categoryParam = searchParams.get("category") as MapCategory | null;
+    if (categoryParam && DEFAULT_FILTERS.includes(categoryParam)) {
+      setActiveFilters(new Set([categoryParam]));
+    }
+  }, [searchParams]);
+
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });

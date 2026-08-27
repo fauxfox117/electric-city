@@ -8,7 +8,7 @@
   { id: 'reptiles', label: 'Reptiles', icon: '/images/reptiles.png', iconActive: '/images/reptiles.png' },
   { id: 'mammals', label: 'Mammals', icon: '/images/mammals.png', iconActive: '/images/mammals.png' },
   { id: 'birds', label: 'Birds', icon: '/images/birds.png', iconActive: '/images/birds.png' },
-  { id: 'invertebrates', label: 'Invertebrates', icon: '/images/invertebretes.png', iconActive: '/images/invertebretes.png' },
+  { id: 'invertebrates', label: 'Invertebrates', icon: '/images/invertebrates.png', iconActive: '/images/invertebrates.png' },
 ];
 
   export function HomeMapPreview() {
