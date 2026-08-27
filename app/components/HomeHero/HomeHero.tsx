@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router';
+import { withBase } from '~/utils/publicPath';
 import './HomeHero.css';
 
 export function HomeHero() {
@@ -7,7 +8,7 @@ export function HomeHero() {
   return (
     <div className="home-hero">
       <div className="home-hero__logo-wrapper">
-        <img src="/images/logo.png" alt="Electric City Aquarium & Reptile Den" className="home-hero__logo" />
+        <img src={withBase("/images/logo.png")} alt="Electric City Aquarium & Reptile Den" className="home-hero__logo" />
       </div>
       <h1 className="home-hero__title">Explore Our World</h1>
       <p className="home-hero__welcome">

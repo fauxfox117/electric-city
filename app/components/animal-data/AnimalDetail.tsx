@@ -2,22 +2,23 @@ import { useEffect, useState } from "react";
 import { data, Link } from "react-router";
 import { useIdleRedirect } from "~/hooks/useIdleRedirect";
 import { getAnimalById } from "~/utils/api";
+import { withBase } from "~/utils/publicPath";
 import type { Route } from "./+types/AnimalDetail";
 import "./AnimalDetail.css";
 
-const ARROW_ICON = "/round-arrow-back.png";
-const CLOSE_ICON = "/close-btn.png";
+const ARROW_ICON = withBase("/round-arrow-back.png");
+const CLOSE_ICON = withBase("/close-btn.png");
 const TAXONOMIC_ICONS: Record<string, string> = {
-  fish: "/images/fish.png",
-  reptile: "/images/reptiles.png",
-  amphibian: "/images/amphibians.png",
-  mammal: "/images/mammals.png",
-  bird: "/images/birds.png",
-  invertebrate: "/images/invertebretes.png",
+  fish: withBase("/images/fish.png"),
+  reptile: withBase("/images/reptiles.png"),
+  amphibian: withBase("/images/amphibians.png"),
+  mammal: withBase("/images/mammals.png"),
+  bird: withBase("/images/birds.png"),
+  invertebrate: withBase("/images/invertebretes.png"),
 };
-const MISSING_PHOTO_ICON = "/Missing-photo.svg";
-const PHOTO_BACK_ICON = "/photo-back-btn.svg";
-const PHOTO_FORWARD_ICON = "/photo-forward-btn.svg";
+const MISSING_PHOTO_ICON = withBase("/Missing-photo.svg");
+const PHOTO_BACK_ICON = withBase("/photo-back-btn.svg");
+const PHOTO_FORWARD_ICON = withBase("/photo-forward-btn.svg");
 
 type AnimalDetailOptionalFields = {
   description?: string;
@@ -27,7 +28,7 @@ type AnimalDetailOptionalFields = {
   diet?: string;
 };
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const animal = getAnimalById(params.id);
   if (!animal) {
     throw data("Animal not found", { status: 404 });
@@ -41,27 +42,27 @@ function truncate(text: string, max = 260) {
 }
 
 function normalizePhotoUrl(raw?: string) {
-  if (!raw || !raw.trim()) return "/Missing-Data.svg";
+  if (!raw || !raw.trim()) return withBase("/Missing-Data.svg");
   if (/^https?:\/\//i.test(raw)) return raw;
   const normalized = raw.trim().replace(/^\.?\/public\//, "").replace(/^\.?\//, "");
-  return `/${normalized}`;
+  return withBase(`/${normalized}`);
 }
 
 function normalizeIconUrl(raw?: string) {
-  if (!raw || !raw.trim()) return "/Least-Concern.svg";
+  if (!raw || !raw.trim()) return withBase("/Least-Concern.svg");
   if (/^https?:\/\//i.test(raw)) return raw;
   const normalized = raw.trim().replace(/^\.?\//, "");
-  return `/${normalized}`;
+  return withBase(`/${normalized}`);
 }
 
 const CONSERVATION_STATUS_ICONS: Record<string, string> = {
-  "least concern": "/Least-Concern.svg",
-  "near threatened": "/Near-Threatened.svg",
-  "vulnerable": "/Vulnerable.svg",
-  "endangered": "/Endangered.svg",
-  "critically endangered": "/Critically-Endangered.svg",
-  "extinct in the wild": "/Extinct-in-the-Wild.svg",
-  extinct: "/Extinct.svg",
+  "least concern": withBase("/Least-Concern.svg"),
+  "near threatened": withBase("/Near-Threatened.svg"),
+  "vulnerable": withBase("/Vulnerable.svg"),
+  "endangered": withBase("/Endangered.svg"),
+  "critically endangered": withBase("/Critically-Endangered.svg"),
+  "extinct in the wild": withBase("/Extinct-in-the-Wild.svg"),
+  extinct: withBase("/Extinct.svg"),
 };
 
 export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
@@ -75,7 +76,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
   const description = animal.description ?? "";
   const photoSource = normalizePhotoUrl(animal.photoUrl);
   const statusKey = animal.conservationStatus?.toLowerCase() ?? "least concern";
-  const resolvedStatusIcon = CONSERVATION_STATUS_ICONS[statusKey] ?? animal.conservationStatusIcon ?? "/Least-Concern.svg";
+  const resolvedStatusIcon = CONSERVATION_STATUS_ICONS[statusKey] ?? animal.conservationStatusIcon ?? withBase("/Least-Concern.svg");
   const statusIconSource = normalizeIconUrl(resolvedStatusIcon);
   const statusText = animal.conservationStatus.toUpperCase();
   const taxonomicLabel = animal.taxonomicGroup.toUpperCase();
@@ -276,7 +277,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                 </div>
                 <div className="quick-stats">
                   <div className="stat-card">
-                    <img className="icon" alt="Weight icon" src="/weight.svg" />
+                    <img className="icon" alt="Weight icon" src={withBase("/weight.svg")} />
                     <div className="card-content">
                       <div className="div-wrapper-2">
                         <div className="text-wrapper-6">WEIGHT</div>
@@ -288,7 +289,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                   </div>
 
                   <div className="stat-card-2">
-                    <img className="img" alt="Length icon" src="/length.svg" />
+                    <img className="img" alt="Length icon" src={withBase("/length.svg")} />
                     <div className="card-content">
                       <div className="div-wrapper-2">
                         <div className="text-wrapper-6">LENGTH</div>
@@ -300,7 +301,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                   </div>
 
                   <div className="stat-card-3">
-                    <img className="icon-2" alt="Lifespan icon" src="/lifespan.svg" />
+                    <img className="icon-2" alt="Lifespan icon" src={withBase("/lifespan.svg")} />
                     <div className="card-content">
                       <div className="div-wrapper-2">
                         <div className="text-wrapper-6">LIFESPAN</div>
@@ -312,7 +313,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                   </div>
 
                   <div className="stat-card-4">
-                    <img className="icon-3" alt="Diet icon" src="/Icon.svg" />
+                    <img className="icon-3" alt="Diet icon" src={withBase("/Icon.svg")} />
                     <div className="card-content">
                       <div className="div-wrapper-2">
                         <div className="text-wrapper-6">DIET</div>

@@ -2,27 +2,28 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { useIdleRedirect } from "~/hooks/useIdleRedirect";
 import type { Animal } from "~/utils/types";
+import { withBase } from "~/utils/publicPath";
 import "./InteractiveMap.css";
 
-const ARROW_ICON_DEFAULT = "/round-arrow-back.png";
+const ARROW_ICON_DEFAULT = withBase("/round-arrow-back.png");
 const CATEGORY_ICONS: Record<MapCategory, string> = {
-  fish: "/images/fish.png",
-  reptiles: "/images/reptiles.png",
-  amphibians: "/images/amphibians.png",
-  birds: "/images/birds.png",
-  mammals: "/images/mammals.png",
-  invertebrates: "/images/invertebrates.png",
+  fish: withBase("/images/fish.png"),
+  reptiles: withBase("/images/reptiles.png"),
+  amphibians: withBase("/images/amphibians.png"),
+  birds: withBase("/images/birds.png"),
+  mammals: withBase("/images/mammals.png"),
+  invertebrates: withBase("/images/invertebrates.png"),
 };
 const CATEGORY_ACTIVE_ICONS: Record<MapCategory, string> = {
-  fish: "/images/fish.png",
-  reptiles: "/images/reptiles.png",
-  amphibians: "/images/amphibians.png",
-  birds: "/images/birds.png",
-  mammals: "/images/mammals.png",
-  invertebrates: "/images/invertebrates.png",
+  fish: withBase("/images/fish.png"),
+  reptiles: withBase("/images/reptiles.png"),
+  amphibians: withBase("/images/amphibians.png"),
+  birds: withBase("/images/birds.png"),
+  mammals: withBase("/images/mammals.png"),
+  invertebrates: withBase("/images/invertebrates.png"),
 };
-const PLUS_ICON = "/plus-icon.svg";
-const MINUS_ICON = "/minus-icon.svg";
+const PLUS_ICON = withBase("/plus-icon.svg");
+const MINUS_ICON = withBase("/minus-icon.svg");
 
 type MapCategory =
   | "fish"
@@ -275,7 +276,7 @@ return (
               className="imap-map-inner"
               style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`, transformOrigin: "top left" }}
             >
-              <img ref={imageRef} className="imap-map-image" src="/world-map.png" alt="World map" />
+              <img ref={imageRef} className="imap-map-image" src={withBase("/world-map.png")} alt="World map" />
               <div className="imap-map-marker-layer">
                 {visibleMarkers.map((marker, index) => {
                   const id = marker.animal.id.trim();
