@@ -1,12 +1,15 @@
 .imap-screen {
   --bg: #0b3c5d;
-  --dk: #111111;
+  --dk: #86b8f5;
   --panel-bg: #f2f3f5;
   --panel-muted: #8f8c8c;
   --white: #ffffff;
   --teal: #2a9d8f;
   width: 100%;
-  min-height: 100vh;
+  max-width: 1920px;
+  height: min(100dvh, 1080px, 56.25vw);
+  max-height: 1080px;
+  min-height: 0;
   margin: 0 auto;
   padding: 0;
   display: flex;
@@ -23,7 +26,6 @@
   gap: 22px;
   padding: 18px 28px 16px;
   background: rgba(11, 60, 93, 0.96);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .imap-back-btn {
@@ -84,7 +86,9 @@
 .imap-stage {
   position: relative;
   flex: 1;
+  min-height: 0;
   padding: 26px 34px 40px;
+  box-sizing: border-box;
   background: #0b3c5d;
   overflow: hidden;
 }
@@ -93,13 +97,17 @@
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 760px;
+  min-height: 0;
+  display: grid;
+  place-items: center;
 }
 
 .imap-map-oval {
   position: relative;
-  width: min(100%, 1480px);
-  height: min(77vh, 820px);
+  width: min(100%, 1980px);
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 1696 / 765;
   margin: 0 auto;
   overflow: hidden;
   border-radius: 16px;
@@ -119,8 +127,8 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  background: #eaf2f7;
+  object-fit: contain;
+  background: #ffffff;
 }
 
 .imap-map-marker-layer {
@@ -130,10 +138,12 @@
 
 .imap-marker {
   position: absolute;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 2px solid rgba(17, 17, 17, 0.9);
+  width: 68px;
+  height: 52px;
+  background: #005fcb;
+  border-color: #005fcb;
+  border-radius: 999px;
+  border: 2px solid #005fcb;
   background: var(--white);
   color: #0b3c5d;
   display: grid;
@@ -147,12 +157,81 @@
     box-shadow 120ms ease;
 }
 
+.imap-marker-named {
+  width: max-content;
+  min-width: 0;
+  height: 52px;
+  box-sizing: border-box;
+  padding: 10px 20px;
+  gap: 5px;
+  background: #ffffff;
+  border: 2px solid #005fcb;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.imap-marker-named.imap-marker-selected {
+  background: #005fcb;
+  border-color: #005fcb;
+  color: #ffffff;
+}
+
+.imap-marker-name {
+  display: none;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.imap-marker-named .imap-marker-name {
+  display: inline;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: -0.22px;
+}
+
+.imap-marker-named .imap-marker-visual {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+}
+
+.imap-marker-named .imap-marker-visual img {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) saturate(100%) invert(25%) sepia(92%) saturate(1880%)
+    hue-rotate(194deg) brightness(86%) contrast(101%);
+}
+
+.imap-marker-named.imap-marker-selected .imap-marker-visual img {
+  filter: none;
+}
+
 .imap-marker-visual {
   width: 100%;
   height: 100%;
   display: grid;
   place-items: center;
   font-size: 13px;
+  background: transparent;
+}
+
+.imap-marker-visual img {
+  display: block;
+  background: transparent;
+}
+
+.imap-marker:not(.imap-marker-selected) .imap-marker-visual img {
+  filter: brightness(0) saturate(100%) invert(25%) sepia(92%) saturate(1880%)
+    hue-rotate(194deg) brightness(86%) contrast(101%);
 }
 
 .imap-marker:focus-visible,
@@ -163,7 +242,7 @@
 }
 
 .imap-marker-selected {
-  background: var(--dk);
+  background: #005fcb;
   color: var(--white);
 }
 
@@ -172,7 +251,7 @@
   transform: translate(-50%, 14px);
   min-width: 120px;
   background: rgba(255, 255, 255, 0.96);
-  border: 2px solid rgba(17, 17, 17, 0.9);
+  border: 2px solid #005fcb;
   padding: 8px 12px;
   font-size: 13px;
   text-decoration: none;
@@ -181,7 +260,7 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   z-index: 6;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12); */
 }
 
 .imap-selected-tag::after {
@@ -197,44 +276,48 @@
 
 .imap-categories {
   position: absolute;
-  left: 34px;
-  top: 46%;
-  transform: translateY(-50%);
-  width: 248px;
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid rgba(17, 17, 17, 0.2);
+  left: 45px;
+  top: 306px;
+  transform: none;
+  width: 353px;
+  height: 467px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #b7b7b7;
   border-radius: 10px;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-  padding: 16px 18px 12px;
+  padding: 20px;
   z-index: 10;
 }
 
 .imap-panel-title {
   margin: 0;
-  padding-bottom: 8px;
-  color: var(--dk);
-  border-bottom: 1px solid rgba(17, 17, 17, 0.2);
-  font-size: 20px;
-  line-height: 1.2;
-  letter-spacing: 0.08em;
+  padding-bottom: 0;
+  color: #636363;
+  border-bottom: 0;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 22px;
+  line-height: 26px;
+  letter-spacing: -0.22px;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .imap-category-list {
   list-style: none;
-  margin: 12px 0 0;
+  margin: 20px 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 20px;
 }
 
 .imap-category-btn {
-  width: 100%;
+  width: 280px;
+  min-height: 40px;
   border: 0;
   background: transparent;
-  padding: 6px 0;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -243,25 +326,47 @@
   cursor: pointer;
 }
 
+.imap-category-btn-active .imap-category-icon {
+  background: #005fcb;
+  border-color: #005fcb;
+}
+
 .imap-category-label {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: rgba(17, 17, 17, 0.8);
-  font-size: 14px;
-  font-weight: 500;
+  color: #8f8c8c;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
 }
 
 .imap-category-icon {
-  width: 22px;
-  height: 22px;
-  border-radius: 5px;
-  border: 1px solid rgba(17, 17, 17, 0.7);
-  background: rgba(255, 255, 255, 0.9);
-  display: grid;
-  place-items: center;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 2px solid #b7b7b7;
+  padding: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 12px;
   line-height: 1;
+}
+
+.imap-category-icon img,
+.imap-marker-visual img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.imap-category-icon img {
+  filter: brightness(0);
+  opacity: 0.55;
 }
 
 .imap-category-btn:focus-visible {
@@ -270,53 +375,77 @@
 }
 
 .imap-category-count {
-  font-size: 14px;
-  font-weight: 700;
-  color: rgba(17, 17, 17, 0.74);
+  font-size: 24px;
+  font-weight: 400;
+  color: #8f8c8c;
 }
 
 .imap-category-btn-active .imap-category-icon {
-  background: #111111;
   color: #ffffff;
 }
 
+.imap-category-btn-active .imap-category-icon img {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+}
+
+.imap-category-btn-active .imap-category-label,
+.imap-category-btn-active .imap-category-count {
+  color: #000000;
+}
+
 .imap-category-btn:not(.imap-category-btn-active) {
-  opacity: 0.72;
+  opacity: 1;
 }
 
 .imap-panel-note {
-  margin: 10px 0 0;
+  margin: 20px 0 0;
   color: var(--panel-muted);
-  font-size: 12px;
-  line-height: 1.4;
-  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 400;
 }
 
 .imap-zoom-controls {
   position: absolute;
-  right: 32px;
-  bottom: 34px;
+  right: 79px;
+  bottom: 134px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 13px;
   z-index: 7;
 }
 
 .imap-zoom-controls button {
-  width: 52px;
-  height: 52px;
-  border: 2px solid rgba(17, 17, 17, 0.9);
-  background: rgba(255, 255, 255, 0.96);
-  border-radius: 8px;
-  font-size: 38px;
-  font-weight: 300;
-  line-height: 1;
+  width: 80px;
+  height: 80px;
+  padding: 16px;
+  border: 2px solid #000000;
+  background: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
   color: var(--dk);
   cursor: pointer;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.imap-zoom-controls button:last-child {
+  padding: 18px 16px 18px 20px;
+}
+
+.imap-zoom-controls button:first-child img {
+  width: 48px;
+  height: 48px;
+}
+
+.imap-zoom-controls button:last-child img {
+  width: 44px;
+  height: 44px;
 }
 
 .imap-map-pan {
+  height: 100%;
   touch-action: none;
   user-select: none;
 }
@@ -336,32 +465,20 @@
   place-items: center;
 }
 
-@media (max-width: 1100px) {
-  .imap-notes {
-    position: static;
-    width: auto;
-    margin-bottom: 12px;
-  }
+@media (max-width: 1210px) {
+  /* Zoom controls adjustment for smaller screens */
 
-  .imap-stage {
-    padding-bottom: 300px;
-  }
-
-  .imap-categories {
-    left: 20px;
-    right: 20px;
-    width: auto;
-    bottom: 18px;
-  }
-
-  .imap-map {
-    margin-top: 0;
+  .imap-zoom-controls {
+    right: 60px;
+    bottom: 175px;
   }
 }
 
-@media (max-width: 800px) {
+/* @media (max-width: 900px) {
   .imap-screen {
     padding: 0;
+    height: 100dvh;
+    max-height: none;
   }
 
   .imap-title {
@@ -437,5 +554,17 @@
 
   .imap-category-count {
     font-size: 18px;
+  }
+} */
+
+@media (min-width: 701px) and (max-width: 1210px) {
+  .imap-screen {
+    zoom: 0.75;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    min-height: 133.333333dvh;
+    max-height: none;
+    overflow: auto;
   }
 }

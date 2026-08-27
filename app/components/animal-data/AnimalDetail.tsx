@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { data, Link } from "react-router";
 import { useIdleRedirect } from "~/hooks/useIdleRedirect";
 import { getAnimalById } from "~/utils/api";
-import type { Route } from "./+types/animal";
-import "./animal.css";
+import type { Route } from "./+types/AnimalDetail";
+import "./AnimalDetail.css";
 
-// Figma back button arrow icon (default state)
-const ARROW_ICON_DEFAULT = "https://www.figma.com/api/mcp/asset/648dddff-2472-4d23-9b97-50f302d71e7e.svg";
-// Figma back button arrow icon (hover state)
-const ARROW_ICON_HOVER = "https://www.figma.com/api/mcp/asset/3360e184-8e39-4f1a-8542-4b46a03cdecd.svg";
-// Figma back button arrow icon (on-click state)
-const ARROW_ICON_ACTIVE = "https://www.figma.com/api/mcp/asset/6ae8ede4-e473-4712-83ec-241033bc82a8.svg";
+const ARROW_ICON = "/round-arrow-back.png";
+const CLOSE_ICON = "/close-btn.png";
+const TAXONOMIC_ICONS: Record<string, string> = {
+  fish: "/images/fish.png",
+  reptile: "/images/reptiles.png",
+  amphibian: "/images/amphibians.png",
+  mammal: "/images/mammals.png",
+  bird: "/images/birds.png",
+  invertebrate: "/images/invertebretes.png",
+};
+const MISSING_PHOTO_ICON = "/Missing-photo.svg";
+const PHOTO_BACK_ICON = "/photo-back-btn.svg";
+const PHOTO_FORWARD_ICON = "/photo-forward-btn.svg";
 
 type AnimalDetailOptionalFields = {
   description?: string;
@@ -36,7 +43,7 @@ function truncate(text: string, max = 260) {
 function normalizePhotoUrl(raw?: string) {
   if (!raw || !raw.trim()) return "/Missing-Data.svg";
   if (/^https?:\/\//i.test(raw)) return raw;
-  const normalized = raw.trim().replace(/^\.?\//, "");
+  const normalized = raw.trim().replace(/^\.?\/public\//, "").replace(/^\.?\//, "");
   return `/${normalized}`;
 }
 
@@ -62,11 +69,10 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
   useIdleRedirect(120000);
 
   const animal = loaderData.animal as typeof loaderData.animal & AnimalDetailOptionalFields;
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [readMoreContent, setReadMoreContent] = useState<{ title: string; text: string } | null>(null);
   const [activeMedia, setActiveMedia] = useState<"video" | "photo" | "audio">("video");
 
-  const description = animal.description ?? animal.habitatDescription ?? "";
-  const shownDescription = isExpanded ? description : truncate(description);
+  const description = animal.description ?? "";
   const photoSource = normalizePhotoUrl(animal.photoUrl);
   const statusKey = animal.conservationStatus?.toLowerCase() ?? "least concern";
   const resolvedStatusIcon = CONSERVATION_STATUS_ICONS[statusKey] ?? animal.conservationStatusIcon ?? "/Least-Concern.svg";
@@ -74,20 +80,79 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
   const statusText = animal.conservationStatus.toUpperCase();
   const taxonomicLabel = animal.taxonomicGroup.toUpperCase();
   const keyThreats = (animal.threats ?? []).slice(0, 4);
+  const photoAvailable = Boolean(animal.photoUrl?.trim());
+
+  useEffect(() => {
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setReadMoreContent(null);
+    }
+
+    document.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.removeEventListener("keydown", closeOnEscape);
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, []);
+
+  function expandableText(title: string, text: string, className: string, threshold = 180) {
+    const canExpand = text.length > threshold;
+
+    return (
+      <>
+        <div className={className}>{canExpand ? truncate(text) : text}</div>
+        {canExpand && (
+          <button
+            type="button"
+            className="read-more-btn"
+            onClick={() => setReadMoreContent({ title, text })}
+          >
+            READ MORE
+          </button>
+        )}
+      </>
+    );
+  }
 
   return (
     <main className="animal-screen">
       <header className="animal-topbar">
         <Link to="/map" className="animal-back-btn" aria-label="Back to map">
-          <img src={ARROW_ICON_DEFAULT} alt="" className="animal-back-btn-icon" />
+          <img src={ARROW_ICON} alt="" className="animal-back-btn-icon" />
         </Link>
         <h1 className="animal-title">{animal.commonName.toUpperCase()}</h1>
+        <Link to="/map" className="animal-close-btn" aria-label="Close animal details">
+          <img src={CLOSE_ICON} alt="" />
+        </Link>
       </header>
 
       <section className="animal-layout">
         <aside className="animal-media-column">
           <div className="animal-hero-media">
-            <img className="animal-photo" src={photoSource} alt={animal.commonName} />
+            {photoAvailable ? (
+              <img className="animal-photo" src={photoSource} alt={animal.commonName} />
+            ) : (
+              <div className="animal-empty-state">
+                <button type="button" className="photo-nav-button" aria-label="Previous photo">
+                  <img src={PHOTO_BACK_ICON} alt="" />
+                </button>
+                <img className="missing-photo-icon" src={MISSING_PHOTO_ICON} alt="" />
+                <div className="missing-photo-copy">
+                  <strong>No Photo Available</strong>
+                  <p>We’re currently updating this animal’s image.</p>
+                  <p>Please explore another species.</p>
+                </div>
+                <button type="button" className="photo-nav-button" aria-label="Next photo">
+                  <img src={PHOTO_FORWARD_ICON} alt="" />
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="animal-media-controls" role="tablist" aria-label="Media type">
@@ -130,9 +195,16 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                     </div>
                   </div>
                   <div className="species-conservation">
-                    <div className="iucn-status-row">
-                      <img className="iucn-status-icon" src={statusIconSource} alt={statusText} />
-                      <span className="iucn-status-text">{statusText}</span>
+                    <div className={`iucn-status-row status-row--${statusKey.replaceAll(" ", "-")}`}>
+                      {[
+                        ["EX", "extinct"], ["EW", "extinct in the wild"], ["CR", "critically endangered"],
+                        ["EN", "endangered"], ["VU", "vulnerable"], ["NT", "near threatened"], ["LC", "least concern"],
+                      ].map(([code, key]) => (
+                        <span key={code} className={`status-pill status-pill--${key.replaceAll(" ", "-")} ${key === statusKey ? "status-pill--selected" : ""}`}>
+                          {code}
+                        </span>
+                      ))}
+                      <span className="status-caption">{statusText}</span>
                     </div>
                   </div>
                 </div>
@@ -144,12 +216,13 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                 </div>
                 <div className="section-content-2">
                   <div className="habitat">
-                    <div className="country-territory">{animal.nativeRegion ?? "Unknown region"}</div>
+                    {expandableText("nativeRegion", animal.nativeRegion ?? "Unknown region", "country-territory")}
                     <div className="specific-region-of">
-                      {animal.habitatDescription ?? "No habitat description available"}
+                      {expandableText("Habitat", animal.habitatDescription ?? "No habitat description available", "habitat-copy")}
                     </div>
                   </div>
                   <div className="taxonomic-badge" aria-label={taxonomicLabel}>
+                    <img src={TAXONOMIC_ICONS[animal.taxonomicGroup]} alt="" />
                     <span>{taxonomicLabel}</span>
                   </div>
                 </div>
@@ -162,18 +235,9 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                   </div>
                   <div className="fun-fact-card">
                     <div className="fun-fact-container">
-                      <div className="add-fun-fact-here">{shownDescription}</div>
+                      {expandableText("Description", description, "add-fun-fact-here")}
                     </div>
                   </div>
-                  {description.length > 260 && (
-                    <button
-                      type="button"
-                      className="read-more-btn"
-                      onClick={() => setIsExpanded((value) => !value)}
-                    >
-                      {isExpanded ? "READ LESS" : "READ MORE"}
-                    </button>
-                  )}
                 </div>
               )}
 
@@ -184,7 +248,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                   </div>
                   <div className="fun-fact-card">
                     <div className="fun-fact-container">
-                      <div className="add-fun-fact-here">{animal.funFact}</div>
+                      {expandableText("Fun Fact", animal.funFact, "add-fun-fact-here")}
                     </div>
                   </div>
                 </div>
@@ -199,7 +263,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                     {keyThreats.map((threat) => (
                       <div key={threat} className="bullet">
                         <span className="threat-dot" aria-hidden="true" />
-                        <div className="bullet-point">{threat}</div>
+                        {expandableText("Key Threat", threat, "bullet-point")}
                       </div>
                     ))}
                   </div>
@@ -212,13 +276,13 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                 </div>
                 <div className="quick-stats">
                   <div className="stat-card">
-                    <img className="icon" alt="Weight icon" src="/length.svg" />
+                    <img className="icon" alt="Weight icon" src="/weight.svg" />
                     <div className="card-content">
                       <div className="div-wrapper-2">
                         <div className="text-wrapper-6">WEIGHT</div>
                       </div>
                       <div className="div-wrapper-2">
-                        <div className="text-wrapper-7">{animal.weight ?? "Unknown"}</div>
+                        {expandableText("Weight", animal.weight ?? "Unknown", "text-wrapper-7", 25)}
                       </div>
                     </div>
                   </div>
@@ -230,7 +294,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                         <div className="text-wrapper-6">LENGTH</div>
                       </div>
                       <div className="div-wrapper-2">
-                        <div className="text-wrapper-7">{animal.length ?? "Unknown"}</div>
+                        {expandableText("Length", animal.length ?? "Unknown", "text-wrapper-7", 25)}
                       </div>
                     </div>
                   </div>
@@ -242,7 +306,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                         <div className="text-wrapper-6">LIFESPAN</div>
                       </div>
                       <div className="div-wrapper-2">
-                        <div className="number-of-years">{animal.lifespan ?? "Unknown"}</div>
+                        {expandableText("Lifespan", animal.lifespan ?? "Unknown", "number-of-years", 25)}
                       </div>
                     </div>
                   </div>
@@ -254,7 +318,7 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
                         <div className="text-wrapper-6">DIET</div>
                       </div>
                       <div className="div-wrapper-2">
-                        <div className="text-wrapper-7">{animal.diet ?? "Unknown"}</div>
+                        {expandableText("Diet", animal.diet ?? "Unknown", "text-wrapper-7", 25)}
                       </div>
                     </div>
                   </div>
@@ -264,6 +328,34 @@ export default function AnimalDetail({ loaderData }: Route.ComponentProps) {
           </div>
         </div>
       </section>
+
+      {readMoreContent && (
+        <div
+          className="read-more-modal-backdrop"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setReadMoreContent(null);
+          }}
+        >
+          <section
+            className="read-more-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="read-more-modal-title"
+          >
+            <button
+              type="button"
+              className="read-more-modal-close"
+              onClick={() => setReadMoreContent(null)}
+              aria-label="Close expanded content"
+            >
+              <img src={CLOSE_ICON} alt="" />
+            </button>
+            <h2 id="read-more-modal-title">{readMoreContent.title}</h2>
+            <p>{readMoreContent.text}</p>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
