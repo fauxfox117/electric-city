@@ -4,7 +4,7 @@ import { useIdleRedirect } from "~/hooks/useIdleRedirect";
 import type { Animal } from "~/utils/types";
 import "./InteractiveMap.css";
 
-const ARROW_ICON_DEFAULT = "./public/round-arrow-back.png";
+const ARROW_ICON_DEFAULT = "/round-arrow-back.png";
 const CATEGORY_ICONS: Record<MapCategory, string> = {
   fish: "/images/fish.png",
   reptiles: "/images/reptiles.png",
