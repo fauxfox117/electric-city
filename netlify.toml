@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "build/client"
+
+[build.environment]
+  # Netlify serves the site at the domain root, unlike the GitHub Pages project path.
+  GITHUB_PAGES_BASE = "/"
+
+# Client-side routing: let React Router handle all paths.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
