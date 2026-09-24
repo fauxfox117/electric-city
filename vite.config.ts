@@ -8,6 +8,10 @@ const base = process.env.GITHUB_PAGES_BASE ?? "/electriccity_team3/";
 
 export default defineConfig({
   base,
+  // gh-pages-shell.mjs reads build/client/.vite/manifest.json to assemble index.html
+  build: {
+    manifest: true,
+  },
   plugins: [tailwindcss(), reactRouter()],
   resolve: {
     tsconfigPaths: true,
