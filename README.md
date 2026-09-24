@@ -13,7 +13,7 @@ The app is built for a large 16:9 kiosk display and includes responsive layouts 
 - Animal detail screens with habitat, conservation status, threats, fun facts, and quick statistics
 - Responsive layouts for desktop, iPad, and mobile viewports
 - Local image, icon, and font assets for reliable kiosk playback
-- Server-side rendering with React Router
+- Static single-page app build served via Netlify
 
 ## Tech Stack
 
@@ -58,16 +58,10 @@ Run the TypeScript and React Router checks:
 npm run typecheck
 ```
 
-Create a production build:
+Create a production build (static output in `build/client`):
 
 ```bash
 npm run build
-```
-
-Run the production server from the generated build:
-
-```bash
-npm run start
 ```
 
 ## Application Routes
@@ -111,17 +105,6 @@ To add an animal:
 2. Add its image or icon to `public/` when needed.
 3. Use the existing taxonomic group values: `fish`, `reptile`, `amphibian`, `mammal`, `bird`, or `invertebrate`.
 4. Run `npm run typecheck` and verify the map position and detail screen.
-
-## Docker
-
-Build and run the production image:
-
-```bash
-docker build -t electric-city-aquarium .
-docker run --rm -p 3000:3000 electric-city-aquarium
-```
-
-The container serves the production build on port `3000`.
 
 ## Design Notes
 
