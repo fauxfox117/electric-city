@@ -12,7 +12,11 @@ if (!existsSync(manifestPath)) {
 }
 
 const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
-const rootEntry = Object.values(manifest).find((entry) => entry.isEntry);
+// Every route module is also marked isEntry (for code-splitting), so match the
+// actual app bootstrap file specifically rather than grabbing the first isEntry hit.
+const rootEntry = Object.entries(manifest).find(([key]) =>
+  key.endsWith("entry.client.tsx"),
+)?.[1];
 
 if (!rootEntry) {
   console.error("No entry chunk found in manifest");
